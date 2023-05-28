@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/green"
-    android:padding="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     tools:context=".MainActivity">
 
     <RelativeLayout
@@ -28,9 +29,9 @@
             android:paddingTop="5dp"
             android:paddingRight="20dp"
             android:paddingBottom="5dp"
-            android:text="Gamble"
+            android:text="Gamble!"
             android:textColor="#ECE22A"
-            android:textSize="20dp" />
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/txtMoneyText"
@@ -44,7 +45,7 @@
             />
 
         <TextView
-            android:id="@+id/txtMoney"
+            android:id="@+id/tvMoney"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
@@ -63,213 +64,180 @@
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
         >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:text="Round 1"
-            android:textSize="50dp" />
+
 
     </RelativeLayout>
-
     <RelativeLayout
         android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout4">
-        <TextView
-            android:id="@+id/tvScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Score: 0"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"/>
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <LinearLayout
 
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/constraintLayout1"
-            android:id="@+id/constraintLayout5">
-
-            <CheckBox
-                android:id="@+id/cbRace1"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/checkbox"
-                android:button="@color/green"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <SeekBar
-                android:id="@+id/sbRacer1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center"
-                android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-                android:thumb="@drawable/car_of_formula_1_svgrepo_com"
-                android:thumbOffset="1dp"
-                android:valueFrom="1"
-                android:valueTo="1000"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cbRace1"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tickColor="#0000FF" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/constraintLayout2"
-            android:id="@+id/constraintLayout1">
-
-            <CheckBox
-                android:id="@+id/cbRace2"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/checkbox"
-                android:button="@color/green"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <SeekBar
-                android:id="@+id/sbRacer2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center"
-                android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-                android:thumb="@drawable/car_of_formula_1_svgrepo_com"
-                android:thumbOffset="1dp"
-                android:valueFrom="1"
-                android:valueTo="1000"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cbRace2"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tickColor="#0000FF" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout2"
-            android:layout_width="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content">
-
-            <CheckBox
-                android:id="@+id/cbRace3"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/checkbox"
-                android:button="@color/green"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <SeekBar
-                android:id="@+id/sbRacer3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center"
-                android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-                android:thumb="@drawable/car_of_formula_1_svgrepo_com"
-                android:thumbOffset="1dp"
-                android:valueFrom="1"
-                android:valueTo="1000"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cbRace3"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tickColor="#0000FF" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/constraintLayout2"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:weightSum="4"
+            android:orientation="vertical"
             >
+            <androidx.constraintlayout.widget.ConstraintLayout
 
-            <CheckBox
-                android:id="@+id/cbRace4"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:button="@drawable/checkbox"
-                android:background="@drawable/checkbox"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <SeekBar
-                android:id="@+id/sbRacer4"
-                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center"
-                android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-                android:thumb="@drawable/car_of_formula_1_svgrepo_com"
-                android:thumbOffset="1dp"
-                android:valueFrom="1"
+                >
 
-                android:valueTo="1000"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cbRace4"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tickColor="#0000FF" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/constraintLayout3"
-            >
+                <CheckBox
+                    android:id="@+id/cbRace1"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/checkbox"
+                    android:button="@color/green"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <CheckBox
-                android:id="@+id/cbRace5"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:button="@drawable/checkbox"
-                android:background="@drawable/checkbox"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <SeekBar
+                    android:id="@+id/sbRacer1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:progressDrawable="@android:color/transparent"
+                    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                    android:thumb="@drawable/car_of_formula_1_svgrepo_com"
+                    android:thumbOffset="1dp"
+                    android:valueFrom="1"
 
-            <SeekBar
-                android:id="@+id/sbRacer5"
-                android:layout_width="0dp"
+                    android:valueTo="1000"
+                    android:background="@android:color/transparent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cbRace1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tickColor="#0000FF" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+
+                android:layout_weight="1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center"
-                android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-                android:thumb="@drawable/car_of_formula_1_svgrepo_com"
-                android:thumbOffset="1dp"
-                android:valueFrom="1"
+                android:layout_above="@id/constraintLayout2"
+                android:id="@+id/constraintLayout1">
 
-                android:valueTo="1000"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cbRace5"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tickColor="#0000FF" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <CheckBox
+                    android:id="@+id/cbRace2"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/checkbox"
+                    android:button="@color/green"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <SeekBar
+                    android:id="@+id/sbRacer2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:progressDrawable="@android:color/transparent"
+                    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                    android:thumb="@drawable/car_of_formula_1_svgrepo_com"
+                    android:thumbOffset="1dp"
+                    android:valueFrom="1"
+                    android:valueTo="1000"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cbRace2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tickColor="#0000FF" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
+                android:layout_width="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/cbRace3"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/checkbox"
+                    android:button="@color/green"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <SeekBar
+                    android:id="@+id/sbRacer3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                    android:thumb="@drawable/car_of_formula_1_svgrepo_com"
+                    android:thumbOffset="1dp"
+                    android:valueFrom="1"
+                    android:valueTo="1000"
+                    android:progressDrawable="@android:color/transparent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cbRace3"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tickColor="#0000FF" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_below="@id/constraintLayout2"
+                >
+
+                <CheckBox
+                    android:id="@+id/cbRace4"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/checkbox"
+                    android:button="@color/green"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <SeekBar
+                    android:id="@+id/sbRacer4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:progressDrawable="@android:color/transparent"
+                    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                    android:thumb="@drawable/car_of_formula_1_svgrepo_com"
+                    android:thumbOffset="1dp"
+                    android:valueFrom="1"
+
+                    android:valueTo="1000"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cbRace4"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tickColor="#0000FF" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/finish_line"
+
+            android:layout_alignParentEnd="true"/>
     </RelativeLayout>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relativeLayout3"
         android:layout_width="match_parent"
@@ -282,18 +250,40 @@
             android:id="@+id/btnStartRace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
             android:background="@drawable/round_button"
             android:backgroundTint="@color/yellow"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:text="Start Race"
             android:textColor="@color/black"
             android:textSize="30dp"
-            android:paddingLeft="20dp"
-            android:paddingTop="5dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tvBet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current Bet: 100$"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnStartRace"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tvScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Score: 0"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnStartRace"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

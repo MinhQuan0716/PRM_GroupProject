@@ -7,13 +7,12 @@
     android:background="#CCCCCC"
     tools:context=".StartScreenActivity">
 
-    <TextView
+    <ImageView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
-        android:text="Cuộc Đua Kì Thú"
-        android:textSize="50dp"
+        android:src="@drawable/fu88"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
