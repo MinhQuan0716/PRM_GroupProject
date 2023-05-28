@@ -2,6 +2,7 @@ package com.moolight.cuoc_dua_ki_thu;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -18,7 +19,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
     private SeekBar racer1,racer2,racer3,racer4;
     private CheckBox cbRace1,cbRace2,cbRace3,cbRace4;
-    private TextView tvBet,tvMoney,tvScore;
+    private TextView tvBet,tvMoney,tvScore,tvGamble;
     private Button btnStart,btnGamble;
 
     private int score = 0;
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     private int checkedCount = 0;
     private int accelerate = 3, speed = 5;// set for racing realness
     private int place; // 1st 2nd 3rd 4th
+    // check for car finished
+    private boolean[] finishes ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         GetAllViews();
         updateGameStatus();
 
-        CountDownTimer countDownTimer = new CountDownTimer(30000, 100) {
+        CountDownTimer countDownTimer = new CountDownTimer(300000000, 100) {
             @Override
             public void onTick(long millisUntilFinished) {
                 Random random = new Random(System.currentTimeMillis());
@@ -46,17 +49,20 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 int three = random.nextInt(speed);
                 int four = random.nextInt(speed);
 
-                boolean finish1 = checkWinner(this, racer1, "ONE WIN", cbRace1,place);
-                boolean finish2 = checkWinner(this, racer2, "TWO WIN", cbRace2,place);
-                boolean finish3 = checkWinner(this, racer3, "THREE WIN", cbRace3,place);
-                boolean finish4 = checkWinner(this, racer4, "FOUR WIN", cbRace4,place);
+                if(!finishes[0]) finishes[0] = checkWinner(this, racer1, "ONE WIN", cbRace1);
+                if(!finishes[1]) finishes[1] = checkWinner(this, racer2, "TWO WIN", cbRace2);
+                if(!finishes[2]) finishes[2] = checkWinner(this, racer3, "THREE WIN", cbRace3);
+                if(!finishes[3]) finishes[3] = checkWinner(this, racer4, "FOUR WIN", cbRace4);
 
-                if (!finish1) addProgress(racer1,one);
-                if (!finish2) addProgress(racer2,two);
-                if (!finish3) addProgress(racer3,three);
-                if (!finish4) addProgress(racer4,four);
-
-                if (finish1 && finish2 && finish3 && finish4) raceFinished(this);
+                 addProgress(racer1,one);
+                 addProgress(racer2,two);
+                 addProgress(racer3,three);
+                 addProgress(racer4,four);
+                // if all Finished end the race
+                if (finishes[0] && finishes[1] && finishes[2] && finishes[3]) {
+                    this.cancel();
+                    this.onFinish();
+                }
             }
 
             private void addProgress(SeekBar racer, int increase) {
@@ -71,7 +77,12 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
             @Override
             public void onFinish() {
-
+                btnStart.setVisibility(View.VISIBLE);
+                setEnabledAllCheckBox(true);
+                round+= 1;
+                currentBet = 100+round*50;
+                if(currentMoney < currentBet) gameOverForm();
+                updateGameStatus();
             }
         };
         cbRace1.setOnCheckedChangeListener(this);
@@ -80,69 +91,74 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         cbRace4.setOnCheckedChangeListener(this);
 
         btnStart.setOnClickListener(v -> {
-            if(checkedCount>=1 && checkedCount<=3){
-                racer1.setProgress(0);
-                racer2.setProgress(0);
-                racer3.setProgress(0);
-                racer4.setProgress(0);
-                countDownTimer.start();
-                place=0;
-                accelerate = 3; speed=5;
-                btnStart.setVisibility(View.INVISIBLE);
-            }else{
-                Toast.makeText(this,"Please make bet from 1-3 Racer",Toast.LENGTH_SHORT).show();
-            }
+            startRace(countDownTimer);
         });
+
         btnGamble.setOnClickListener(v->{
-            gamble++;
-            if(gamble>4) gamble=1;
-            Toast.makeText(this,"Gamble x"+gamble,Toast.LENGTH_SHORT).show();
-            tvBet.setText(currentBet*gamble);
+            setGambleUp();
         });
     }
 
+    private void startRace(CountDownTimer countDownTimer) {
+        if(checkedCount>=1 && checkedCount<=3){
+            racer1.setProgress(0);
+            racer2.setProgress(0);
+            racer3.setProgress(0);
+            racer4.setProgress(0);
+            finishes = new boolean[4];
+            place=0;
+            accelerate = 3; speed=5;
+            btnStart.setVisibility(View.INVISIBLE);
+            countDownTimer.start();
+        }else{
+            Toast.makeText(this,"Please make bet from 1-3 Racer",Toast.LENGTH_SHORT).show();
+        }
+    }
 
-
-    private void raceFinished(CountDownTimer countDownTimer) {
-        countDownTimer.cancel();
-        if(currentMoney <0) gameOverForm();
-        setEnabledAllCheckBox(true);
-        round+= 1;
-        btnStart.setVisibility(View.VISIBLE);
-        currentBet = 100+round*50;
-        updateGameStatus();
+    private void setGambleUp() {
+        gamble++;
+        if(currentMoney < currentBet*gamble|| gamble>4) gamble=1;
+        Toast.makeText(this,"Gamble x"+gamble,Toast.LENGTH_SHORT).show();
+        tvBet.setText("Current Bet: "+ currentBet*gamble +"$");
+        tvGamble.setText(gamble+"x");
     }
 
     private void gameOverForm()  {
-        Toast.makeText(this, "GameOver! You are in Dept", Toast.LENGTH_SHORT).show();
+        updateGameStatus();
+        Toast.makeText(this, "GameOver! " +(currentMoney<0?"You are in Dept":""), Toast.LENGTH_SHORT).show();
         btnGamble.setEnabled(false);
         btnStart.setEnabled(false);
-    try {
-        Thread.sleep((long) 3000);
-    }catch (Exception e){
 
-    }
+        try {
+            Thread.sleep((long) 3000);
+            Intent intent = new Intent(this, StartScreenActivity.class);
+            startActivity(intent);
+            finish();
+
+        }catch (Exception e){
+
+        }
     }
 
-    private boolean checkWinner(CountDownTimer countDownTimer, SeekBar racer, String message,CheckBox cbRace,int place) {
-        boolean isFinish = racer.getProgress() >= racer.getMax();
+    private boolean checkWinner(CountDownTimer countDownTimer, SeekBar racer, String message,CheckBox cbRace) {
+        boolean isFinish = racer.getProgress() >= racer.getMax();// check if racer hit finish line
         if (isFinish) {
-            place++;
+            // prevent finisher finish again
+            place++;//1st 2nd 3rd 4th should not be 5
+            /*  1 xe thắng trong 3 thì trừ tiền 2 xe thua và cộng lại cho khách 1.5 của 6 7 8
 
-            //kiem tra dat cuoc
-            /*  1 xe thắng trong 3 thì trừ tiền 2 xe thua và cộng lại cho khách 1.5 của 1 cược (1.5*100)
-                1 xe thắng trong 2 thì trừ tiền 1 xe thua và cộng cho khac 1.7
+            //kiem tra dat cuoc1 cược (1.5*100)
+                1 xe thắng trong 2 thì trừ tiền 1 xe thua và cộng cho khac 1.75
                 1 xe thắng trong 1 cược thì cộng trực tiếp vào tk 2.*/
             if (cbRace.isChecked() ) {
                 double money = currentBet * getGamble();
-                if(place<=checkedCount) {
+                if(place==1) {
                     double moneyGet = money * getCheckedMultiplier();
                     score += moneyGet * 10;
                     currentMoney += moneyGet;
                     Toast.makeText(MainActivity.this, message + ", You Won " + moneyGet + "$", Toast.LENGTH_SHORT).show();
                 }else{
                     currentMoney -= money;
-
                 }
             }
 
@@ -167,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
     private void updateGameStatus() {
         tvScore.setText("Score: "+ score);
-        tvBet.setText("Current Bet: "+ currentBet +"$");
+        tvBet.setText("Current Bet: "+ currentBet*gamble +"$");
         tvMoney.setText("Money: "+ currentMoney+"$");
     }
 
@@ -190,6 +206,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         tvBet = (TextView) findViewById(R.id.tvBet);
         tvMoney = (TextView) findViewById(R.id.tvMoney);
         tvScore = (TextView) findViewById(R.id.tvScore);
+        tvGamble = (TextView) findViewById(R.id.tvGamble);
 
         btnStart = (Button) findViewById(R.id.btnStartRace);
         btnGamble = (Button) findViewById(R.id.btnGamble);

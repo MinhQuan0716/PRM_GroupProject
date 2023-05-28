@@ -32,7 +32,15 @@
             android:text="Gamble!"
             android:textColor="#ECE22A"
             android:textSize="25dp" />
-
+        <TextView
+            android:id="@+id/tvGamble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1x"
+            android:layout_marginTop="60dp"
+            android:textSize="25dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/btnGamble"/>
         <TextView
             android:id="@+id/txtMoneyText"
             android:layout_width="wrap_content"
