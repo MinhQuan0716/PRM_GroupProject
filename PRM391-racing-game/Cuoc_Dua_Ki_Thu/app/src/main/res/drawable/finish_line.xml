@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
     <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-        android:src="@android:drawable/checkbox_off_background"
+        android:src="@drawable/finish_line_data"
         android:tileModeY="repeat"
         />
