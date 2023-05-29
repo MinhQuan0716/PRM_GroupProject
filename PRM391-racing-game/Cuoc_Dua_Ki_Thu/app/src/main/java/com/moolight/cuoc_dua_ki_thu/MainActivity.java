@@ -8,7 +8,6 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -81,8 +80,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 setEnabledAllCheckBox(true);
                 round+= 1;
                 currentBet = 100+round*50;
-                if(currentMoney < currentBet) gameOverForm();
                 updateGameStatus();
+                if(currentMoney < currentBet) gameOverForm();
             }
         };
         cbRace1.setOnCheckedChangeListener(this);
@@ -125,13 +124,14 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
     private void gameOverForm()  {
         updateGameStatus();
-        Toast.makeText(this, "GameOver! " +(currentMoney<0?"You are in Dept":""), Toast.LENGTH_SHORT).show();
         btnGamble.setEnabled(false);
         btnStart.setEnabled(false);
 
         try {
+            Toast.makeText(this, "GameOver! " +(currentMoney<0?"You are in Dept":""), Toast.LENGTH_SHORT).show();
             Thread.sleep((long) 3000);
-            Intent intent = new Intent(this, StartScreenActivity.class);
+            Intent intent = new Intent(this, GameOverActivity.class);
+            intent.putExtra("score",score);
             startActivity(intent);
             finish();
 

@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".GameoverActivity">
+    android:background="@color/green"
+    tools:context=".GameOverActivity">
+
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GameOver"
+        android:text="Game Over"
         android:textColor="@color/black"
         android:textSize="50dp"
         android:textStyle="bold"
@@ -25,24 +27,55 @@
         android:id="@+id/lvLeaderBoard"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnRestartButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintBottom_toTopOf="@+id/btnRestartButton"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:hint="Enter Your Name"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
+
+        android:textSize="35dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnRestartButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:textSize="40dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:background="@drawable/round_button"
+        android:backgroundTint="@color/yellow"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/etName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/btnRestartButton"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#17801B"
+        android:background="@drawable/round_button"
+        android:backgroundTint="@color/red"
+        android:text="Restart"
+        android:textColor="@color/yellow"
+        android:textSize="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="50dp"
-        android:text="Restart"
-        android:textColor="#D6CB00"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.9"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/lvLeaderBoard" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
