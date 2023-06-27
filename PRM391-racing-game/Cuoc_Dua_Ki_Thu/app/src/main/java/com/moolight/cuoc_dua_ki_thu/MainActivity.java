@@ -13,6 +13,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.moolight.cuoc_dua_ki_thu.threads.ShutdownThread;
+
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
@@ -20,9 +22,11 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     private CheckBox cbRace1,cbRace2,cbRace3,cbRace4;
     private TextView tvBet,tvMoney,tvScore,tvGamble;
     private Button btnStart,btnGamble;
-
+    private final int MAX_VALUE = 800;
+    private final int START_ACCELERATE = 20;
+    private final int START_SPEED = 10;
     private int score = 0;
-    private double currentMoney = 1000.0;
+    private double currentMoney = 2000.0;
     private int currentBet = 100;
     private int round = 1;
     private int gamble = 1;
@@ -80,8 +84,12 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 setEnabledAllCheckBox(true);
                 round+= 1;
                 currentBet = 100+round*50;
+
                 updateGameStatus();
-                if(currentMoney < currentBet) gameOverForm();
+                if(currentMoney < currentBet) {gameOverForm();return;};
+                while(currentMoney< currentBet*gamble) gamble--;
+                gamble--;
+                setGambleUp();
             }
         };
         cbRace1.setOnCheckedChangeListener(this);
@@ -106,7 +114,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             racer4.setProgress(0);
             finishes = new boolean[4];
             place=0;
-            accelerate = 3; speed=5;
+            accelerate = START_ACCELERATE;
+            speed= START_SPEED;
             btnStart.setVisibility(View.INVISIBLE);
             countDownTimer.start();
         }else{
@@ -116,8 +125,10 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
     private void setGambleUp() {
         gamble++;
-        if(currentMoney < currentBet*gamble|| gamble>4) gamble=1;
-        Toast.makeText(this,"Gamble x"+gamble,Toast.LENGTH_SHORT).show();
+        if(currentMoney < currentBet*gamble) {
+            gamble = 1;
+            Toast.makeText(this, "Can't Gamble More Set back to 1", Toast.LENGTH_SHORT).show();
+        }
         tvBet.setText("Current Bet: "+ currentBet*gamble +"$");
         tvGamble.setText(gamble+"x");
     }
@@ -129,12 +140,10 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         try {
             Toast.makeText(this, "GameOver! " +(currentMoney<0?"You are in Dept":""), Toast.LENGTH_SHORT).show();
-            Thread.sleep((long) 3000);
             Intent intent = new Intent(this, GameOverActivity.class);
             intent.putExtra("score",score);
-            startActivity(intent);
-            finish();
-
+            ShutdownThread shutdownThread =  new ShutdownThread(this,intent);
+            new Thread(shutdownThread).start();//run shutdown thread that start acivity and finish after 3 second
         }catch (Exception e){
 
         }
@@ -150,6 +159,9 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             //kiem tra dat cuoc1 cược (1.5*100)
                 1 xe thắng trong 2 thì trừ tiền 1 xe thua và cộng cho khac 1.75
                 1 xe thắng trong 1 cược thì cộng trực tiếp vào tk 2.*/
+
+            if(place==1 && !cbRace.isChecked()) Toast.makeText(MainActivity.this, message , Toast.LENGTH_SHORT).show();
+
             if (cbRace.isChecked() ) {
                 double money = currentBet * getGamble();
                 if(place==1) {
@@ -184,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     private void updateGameStatus() {
         tvScore.setText("Score: "+ score);
         tvBet.setText("Current Bet: "+ currentBet*gamble +"$");
-        tvMoney.setText("Money: "+ currentMoney+"$");
+        tvMoney.setText(currentMoney+"$");
     }
 
     private void GetAllViews() {
@@ -192,6 +204,10 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         racer2 = (SeekBar) findViewById(R.id.sbRacer2);
         racer3 = (SeekBar) findViewById(R.id.sbRacer3);
         racer4 = (SeekBar) findViewById(R.id.sbRacer4);
+        racer1.setMax(MAX_VALUE);
+        racer2.setMax(MAX_VALUE);
+        racer3.setMax(MAX_VALUE);
+        racer4.setMax(MAX_VALUE);
         // there are no android:enable in main_activity
         racer1.setEnabled(false);
         racer2.setEnabled(false);

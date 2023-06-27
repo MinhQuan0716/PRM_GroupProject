@@ -6,13 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.material.internal.ViewUtils;
 import com.moolight.cuoc_dua_ki_thu.adapter.LeaderBoardAdapter;
 import com.moolight.cuoc_dua_ki_thu.dtos.Player;
 
@@ -22,10 +20,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 
 public class GameOverActivity extends AppCompatActivity {
@@ -88,7 +87,9 @@ public class GameOverActivity extends AppCompatActivity {
         if(players.size()>10) players.removeLast();
         try{
             saveGameData();
-        }catch(Exception ex){}
+        }catch(Exception ex){
+
+        }
         adapter.notifyDataSetChanged();
     }
 
@@ -117,54 +118,48 @@ public class GameOverActivity extends AppCompatActivity {
 
     private LinkedList<Player> getGameData() throws IOException {
         LinkedList<Player> players = new LinkedList<>();
-        FileInputStream fis = null;
-        InputStreamReader isr = null;
+        FileReader fr = null;
         BufferedReader br = null;
         try {
-            //check if file exist
-            openFileOutput(FILE_NAME,MODE_APPEND).close();
-
-            fis = openFileInput(FILE_NAME);
-            isr = new InputStreamReader(fis);
-            br = new BufferedReader(isr);
-            String details;
-            while((details = br.readLine())!= null){
-                String[] component = details.split("|");
-                Player player = new Player();
-                player.name = component[0];
-                player.score = Integer.parseInt(component[1]);
-                players.addLast(player);
+            File file = new File(getExternalFilesDir(null), FILE_NAME); // get the file path in external storage
+            if(file.exists()) {
+                fr = new FileReader(file);
+                br = new BufferedReader(fr);
+                String details;
+                while((details = br.readLine())!= null){
+                    String[] component = details.split(Player.SEPARATOR);
+                    Player player = new Player();
+                    player.name = component[0];
+                    player.score = Integer.parseInt(component[1]);
+                    players.addLast(player);
+                }
             }
-
+            file.getPath();
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
-            if(fis != null) fis.close();
-            if(isr != null) isr.close();
+            if(fr != null) fr.close();
             if(br != null) br.close();
         }
         return players;
     }
 
     private void saveGameData() throws IOException {
-        FileOutputStream fos = null;
-        OutputStreamWriter osw = null;
+        FileWriter fw = null;
         BufferedWriter bw = null;
         try {
-            fos = openFileOutput(FILE_NAME,MODE_PRIVATE);
-            osw = new OutputStreamWriter(fos);
-            bw = new BufferedWriter(osw);
+            File file = new File(getExternalFilesDir(null), FILE_NAME); // get the file path in external storage
+            fw = new FileWriter(file);
+            bw = new BufferedWriter(fw);
             for (Player player:players) {
                 bw.write(player.toString());
-                bw.newLine();
+                bw.write("\n");
             }
 
-
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }finally {
-            if(fos != null) fos.close();
-            if(osw != null) osw.close();
+            if(fw != null) fw.close();
             if(bw != null) bw.close();
         }
     }
