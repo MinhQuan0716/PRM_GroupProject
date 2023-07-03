@@ -43,7 +43,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void signUpForm() {
-        Intent intent = new Intent(this, SIgnUpActivity.class);
+        Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
         finish();
     }
@@ -66,7 +66,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ProductActivity.class);
         startActivity(intent);
     }
 }

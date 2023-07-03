@@ -8,14 +8,14 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class ProductActivity extends AppCompatActivity {
 
     Button btnLogin;
     EditText etUsername,etPassword;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
-        this.setContentView(R.layout.activity_main);
+        this.setContentView(R.layout.activity_product);
 
     }
 }

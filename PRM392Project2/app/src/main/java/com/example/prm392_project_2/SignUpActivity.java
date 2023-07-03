@@ -11,19 +11,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SIgnUpActivity extends AppCompatActivity implements View.OnClickListener {
+import com.example.prm392_project_2.Repositories.UnitOfWork;
+import com.example.prm392_project_2.Services.AccountService;
+
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String REQUIRE = "Required";
-    EditText etUsername;
-    EditText etPassword;
-    EditText etConfirmPassword;
+    EditText etUsername, etPassword,etConfirmPassword;
     TextView tvHaveAccount;
     Button btnSignUp;
+    private AccountService accountService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
+        // Services
+        accountService = UnitOfWork.getAccountService();
         // Reference from Layout
 
         etUsername = findViewById(R.id.etUserName);
@@ -54,6 +58,8 @@ public class SIgnUpActivity extends AppCompatActivity implements View.OnClickLis
         finish();
     }
     private boolean checkInput() {
+        String username=  etUsername.getText().toString();
+        String password= etPassword.getText().toString();
         // Username
         if (TextUtils.isEmpty(etUsername.getText().toString())) {
             etUsername.setError(REQUIRE);
@@ -70,10 +76,13 @@ public class SIgnUpActivity extends AppCompatActivity implements View.OnClickLis
             return false;
         }
         // Check Equal
-        if(!TextUtils.equals(etPassword.getText().toString(),etConfirmPassword.getText().toString())){
+        if(!TextUtils.equals(password,etConfirmPassword.getText().toString())){
             Toast.makeText(this, "Password are not match", Toast.LENGTH_SHORT).show();
             return false;
         }
+
+
+
         // VaLid
         return true;
     }
@@ -82,7 +91,7 @@ public class SIgnUpActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ProductActivity.class);
         startActivity(intent);
         finish();
     }

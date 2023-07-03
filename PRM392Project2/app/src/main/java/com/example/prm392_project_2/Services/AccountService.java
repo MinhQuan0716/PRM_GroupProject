@@ -1,4 +1,4 @@
-package com.example.prm392_project_2.Repositories;
+package com.example.prm392_project_2.Services;
 
 import com.example.prm392_project_2.dtos.Account;
 
@@ -10,7 +10,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-public interface AccountRepository {
+public interface AccountService {
     String PATH = "Account";
 
     @GET(PATH)
