@@ -11,7 +11,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface AccountRepository {
-     String PATH = "Account";
+    String PATH = "Account";
 
     @GET(PATH)
     Call<Account[]> getAllAccounts();
