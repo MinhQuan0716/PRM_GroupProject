@@ -36,7 +36,83 @@ namespace BusinessObject
 
             OnModelCreatingPartial(builder);
         }
+        public void SeedData()
+        {
+            if (Accounts.Any() || Products.Any() || OrderDetails.Any())
+            {
+                // Data already exists, no need to seed
+                return;
+            }
 
+            var accounts = CreateAccountSeedData(10);
+            var products = CreateProductSeedData(10);
+            var orderDetails = CreateOrderDetailSeedData(accounts, products);
+
+            Accounts.AddRange(accounts);
+            Products.AddRange(products);
+            OrderDetails.AddRange(orderDetails);
+            SaveChanges();
+        }
+        private List<Account> CreateAccountSeedData(int count)
+        {
+            var accounts = new List<Account>();
+
+            for (int i = 1; i <= count; i++)
+            {
+                var account = new Account
+                {
+                    Username = $"username{i}",
+                    Password = $"password{i}",
+                    Fullname = $"Fullname{i}",
+                    Avatar = $"Avatar{i}"
+                };
+
+                accounts.Add(account);
+            }
+
+            return accounts;
+        }
+
+        private List<Product> CreateProductSeedData(int count)
+        {
+            var products = new List<Product>();
+
+            for (int i = 1; i <= count; i++)
+            {
+                var product = new Product
+                {
+                    ProductName = $"Product{i}",
+                    Price = i * 100,
+                    Description = $"Description{i}",
+                    ImgPath = $"ImgPath{i}"
+                };
+
+                products.Add(product);
+            }
+
+            return products;
+        }
+
+        private List<OrderDetail> CreateOrderDetailSeedData(List<Account> accounts, List<Product> products)
+        {
+            var orderDetails = new List<OrderDetail>();
+
+            // Assuming each account and product should have a corresponding order detail
+            for (int i = 0; i < accounts.Count; i++)
+            {
+                var orderDetail = new OrderDetail
+                {
+                    AccountId = accounts[i].Id,
+                    ProductId = products[i].Id,
+                    Account = accounts[i],
+                    Product = products[i]
+                };
+
+                orderDetails.Add(orderDetail);
+            }
+
+            return orderDetails;
+        }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
