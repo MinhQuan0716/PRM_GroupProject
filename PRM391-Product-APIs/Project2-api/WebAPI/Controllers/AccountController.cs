@@ -21,15 +21,15 @@ namespace WebAPI.Controllers
         [HttpGet]
         public IActionResult GetAccounts()
         {
-            List<Account> value = _context.Accounts.Include(x=>x.OrderDetails).ToList();
-            return value.Count>0? Ok(value):NotFound();
+            List<Account> value = _context.Accounts.Include(x => x.OrderDetails).ToList();
+            return value.Count > 0 ? Ok(value) : NotFound();
         }
 
         // GET: api/Account/5
         [HttpGet("{id}")]
         public IActionResult GetAccount(int id)
         {
-            var account = _context.Accounts.Include(x => x.OrderDetails).FirstOrDefault(x=>x.Id ==id);
+            var account = _context.Accounts.Include(x => x.OrderDetails).FirstOrDefault(x => x.Id == id);
 
             return account != null ? Ok(account) : NotFound();
         }

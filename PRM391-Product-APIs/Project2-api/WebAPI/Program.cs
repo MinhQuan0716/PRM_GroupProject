@@ -1,5 +1,6 @@
 using BusinessObject;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -28,8 +29,9 @@ builder.Services.AddCors(options =>
                    .AllowAnyHeader();
         });
 });
-var app = builder.Build();
 
+var app = builder.Build();
+SeedDatabase();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
@@ -44,3 +46,22 @@ app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(
 app.MapControllers();
 
 app.Run();
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        try
+        {
+            var context = services.GetRequiredService<PlantShopContext>();
+            //context.Database.EnsureCreated(); // Ensure the database is created
+
+            context.SeedData(); // Seed the data
+        }
+        catch (Exception ex)
+        {
+            app.Logger.LogError(ex, "An error occurred when seeding the DB.");
+        }
+    }
+}

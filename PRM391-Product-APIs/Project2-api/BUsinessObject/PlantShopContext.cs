@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Bogus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -16,34 +17,31 @@ namespace BusinessObject
         {
         }
 
-        public virtual DbSet<Account> Accounts { get; set; } 
-        public virtual DbSet<OrderDetail> OrderDetails { get; set; } 
+        public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Product> Products { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=12345;database= PlantShopDB;TrustServerCertificate=True;");
-            }
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<OrderDetail>().HasOne(x => x.Product).WithMany(x => x.OrderDetailsOrdered).HasForeignKey(x => x.ProductId);
             builder.Entity<OrderDetail>().HasOne(x => x.Account).WithMany(x => x.OrderDetails).HasForeignKey(x => x.AccountId);
-
-
             OnModelCreatingPartial(builder);
         }
         public void SeedData()
         {
-            if (Accounts.Any() || Products.Any() || OrderDetails.Any())
+            var a = Accounts;
+            var p = Products;
+            var od = OrderDetails;
+            if (a.Any() || p.Any() || od.Any())
             {
                 // Data already exists, no need to seed
                 return;
             }
-
+            Console.WriteLine("Seeding Data");
             var accounts = CreateAccountSeedData(10);
             var products = CreateProductSeedData(10);
             var orderDetails = CreateOrderDetailSeedData(accounts, products);
@@ -55,61 +53,58 @@ namespace BusinessObject
         }
         private List<Account> CreateAccountSeedData(int count)
         {
-            var accounts = new List<Account>();
+            var faker = new Faker<Account>()
+                .RuleFor(a => a.Username, f => f.Internet.UserName())
+                .RuleFor(a => a.Password, f => f.Internet.Password())
+                .RuleFor(a => a.Fullname, f => f.Name.FullName())
+                .RuleFor(a => a.Avatar, f => f.Image.PicsumUrl());
 
-            for (int i = 1; i <= count; i++)
-            {
-                var account = new Account
-                {
-                    Username = $"username{i}",
-                    Password = $"password{i}",
-                    Fullname = $"Fullname{i}",
-                    Avatar = $"Avatar{i}"
-                };
-
-                accounts.Add(account);
-            }
-
-            return accounts;
+            return faker.Generate(count);
         }
 
         private List<Product> CreateProductSeedData(int count)
         {
-            var products = new List<Product>();
+            var faker = new Faker<Product>()
+                .RuleFor(p => p.ProductName, f => f.Commerce.ProductName())
+                .RuleFor(p => p.Price, f => f.Random.Number(1, 10) * 100)
+                .RuleFor(p => p.Description, f => f.Lorem.Sentence())
+                .RuleFor(p => p.ImgPath, f => f.Image.PicsumUrl());
 
-            for (int i = 1; i <= count; i++)
-            {
-                var product = new Product
-                {
-                    ProductName = $"Product{i}",
-                    Price = i * 100,
-                    Description = $"Description{i}",
-                    ImgPath = $"ImgPath{i}"
-                };
-
-                products.Add(product);
-            }
-
-            return products;
+            return faker.Generate(count);
         }
-
         private List<OrderDetail> CreateOrderDetailSeedData(List<Account> accounts, List<Product> products)
         {
             var orderDetails = new List<OrderDetail>();
+            var random = new Random();
 
-            // Assuming each account and product should have a corresponding order detail
-            for (int i = 0; i < accounts.Count; i++)
+            var usedCombinations = new HashSet<(int, int)>();
+
+            int numberOfEntities = Math.Min(10, accounts.Count);
+
+            while (orderDetails.Count < numberOfEntities && usedCombinations.Count < accounts.Count * products.Count)
             {
-                var orderDetail = new OrderDetail
-                {
-                    AccountId = accounts[i].Id,
-                    ProductId = products[i].Id,
-                    Account = accounts[i],
-                    Product = products[i]
-                };
+                Console.WriteLine($"Adding New OrderDetail");
+                var accIndex = random.Next(accounts.Count);
+                var prodIndex = random.Next(products.Count);
+                var account = accounts[accIndex];
+                var product = products[prodIndex];
+                var combination = (accIndex, prodIndex);
+                Console.WriteLine($"{combination} {!usedCombinations.Contains(combination)}");
 
-                orderDetails.Add(orderDetail);
+                if (!usedCombinations.Contains(combination))
+                {
+                    orderDetails.Add(new OrderDetail
+                    {
+                        Account = account,
+                        Product = product
+                    });
+
+                    usedCombinations.Add(combination);
+                    Console.WriteLine($"Generated OrderDetail with AccountId: {account.Id}, ProductId: {product.Id}");
+                }
             }
+
+            Console.WriteLine($"Total OrderDetails generated: {orderDetails.Count}");
 
             return orderDetails;
         }

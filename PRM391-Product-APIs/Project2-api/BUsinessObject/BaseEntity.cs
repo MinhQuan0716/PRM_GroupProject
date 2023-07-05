@@ -7,7 +7,7 @@ namespace BusinessObject
     public class BaseEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [JsonProperty(Order = -2,PropertyName ="_id")]
+        [JsonProperty(Order = -2)]
         public int Id { get; set; }
     }
 }
