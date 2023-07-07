@@ -10,6 +10,14 @@ public class Product extends BaseEntity {
     private String imgPath = null;
     private List<OrderDetail> orderDetailsOrdered = new ArrayList<>();
 
+    public Product(int id, String productName, int price, String description, String imgPath) {
+        super(id);
+        this.productName = productName;
+        this.price = price;
+        this.description = description;
+        this.imgPath = imgPath;
+    }
+
     public String getProductName() {
         return productName;
     }
