@@ -1,7 +1,10 @@
 package com.example.prm392_project_2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +29,13 @@ ProductService productService;
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_product);
         RecyclerView productView =(RecyclerView) findViewById(R.id.productView);
+      /*  btnSeeCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(ProductActivity.this,CartActivity.class);
+                startActivity(intent);
+            }
+        });*/
         productService= UnitOfWork.getProductService();
         listProduct=new ArrayList<>();
         Call<Product[]> calls=productService.getAllProducts();

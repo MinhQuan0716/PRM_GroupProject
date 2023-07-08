@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -53,6 +54,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 context.startActivity(intent);
             }
         });
+
+
         Picasso.get().load(product.getImgPath()).into(holder.productImage);
     }
 
@@ -70,14 +73,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
      TextView txtProductPrice;
      TextView txtProductDescription;
      ImageView productImage;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtProductDescription =itemView.findViewById(R.id.productDescription);
             txtProductName=itemView.findViewById(R.id.productName);
             txtProductPrice=itemView.findViewById(R.id.productPrice);
             productImage =itemView.findViewById(R.id.prouctimageView);
-
         }
 
     }

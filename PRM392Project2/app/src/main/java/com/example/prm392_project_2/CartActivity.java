@@ -41,15 +41,18 @@ public class CartActivity extends AppCompatActivity {
             if(listCart==null) {listCart=new ArrayList<>();}
             boolean productExists = false;
             int existingProductIndex = -1;
-            for (int i = 0; i < listCart.size(); i++) {
-                if (listCart.get(i).getProduct().equals(product)) {
-                    listCart.get(i).setQuantity(listCart.get(i).getQuantity() + 1);
-                    productExists = true;
-                    existingProductIndex = i;
-                    break;
+            if (product != null) {
+
+
+                for (int i = 0; i < listCart.size(); i++) {
+                    if (listCart.get(i).getProduct().equals(product)) {
+                        listCart.get(i).setQuantity(listCart.get(i).getQuantity() + 1);
+                        productExists = true;
+                        existingProductIndex = i;
+                        break;
+                    }
                 }
             }
-
             if (!productExists) {
 
                 listCart.add(new CartItem(product, 1));
@@ -61,7 +64,7 @@ public class CartActivity extends AppCompatActivity {
             // Update UI on the main thread
 
             runOnUiThread(() -> {
-              CartAdapter  adapter = new CartAdapter(listCart);
+                CartAdapter  adapter = new CartAdapter(listCart,cartItemDao,CartActivity.this);
                 cartView.setAdapter(adapter);
                 cartView.setLayoutManager(new LinearLayoutManager(this));
                 adapter.notifyDataSetChanged();
@@ -69,5 +72,6 @@ public class CartActivity extends AppCompatActivity {
         }).start();
 
     }
+    }
 
-}
+

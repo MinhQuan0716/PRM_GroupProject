@@ -1,14 +1,20 @@
 package com.example.prm392_project_2.cartutil;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.prm392_project_2.ProductActivity;
 import com.example.prm392_project_2.R;
 import com.example.prm392_project_2.dtos.Product;
 import com.squareup.picasso.Picasso;
@@ -17,9 +23,12 @@ import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private List<CartItem> cartItems;
-
-    public CartAdapter(List<CartItem> cartItems) {
+    private  CartDAO cartDAO;
+    private Context context;
+    public CartAdapter(List<CartItem> cartItems,CartDAO cartDAO,Context context) {
         this.cartItems = cartItems;
+        this.cartDAO=cartDAO;
+        this.context=context;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -27,6 +36,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         private TextView priceTextView;
         private TextView quantityTextView;
         private ImageView productImageView;
+        private Button removeFromCart;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -34,6 +44,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             priceTextView = itemView.findViewById(R.id.priceTextView);
             quantityTextView = itemView.findViewById(R.id.quantityTextView);
             productImageView = itemView.findViewById(R.id.cartImageView);
+            removeFromCart=itemView.findViewById(R.id.removeButton);
         }
     }
 
@@ -45,7 +56,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         CartItem cartItem = cartItems.get(position);
         Product product = cartItem.getProduct();
 
@@ -53,10 +64,33 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.priceTextView.setText("Price: $" + product.getPrice());
         holder.quantityTextView.setText("Quantity: " + cartItem.getQuantity());
         Picasso.get().load(product.getImgPath()).into(holder.productImageView);
+        holder.removeFromCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CartItem cartItem1=cartItems.get(position);
+                cartItems.remove(cartItem1);
+                new DeleteCartItemTask(cartDAO).execute(cartItem1);
+                Intent intent = new Intent(context, ProductActivity.class);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return cartItems.size();
+    }
+    private static class DeleteCartItemTask extends AsyncTask<CartItem, Void, Void> {
+        private CartDAO cartDAO;
+
+        public DeleteCartItemTask(CartDAO cartDAO) {
+            this.cartDAO = cartDAO;
+        }
+
+        @Override
+        protected Void doInBackground(CartItem... cartItems) {
+            cartDAO.delete(cartItems[0]);
+            return null;
+        }
     }
 }

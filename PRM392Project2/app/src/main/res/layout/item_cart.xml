@@ -49,11 +49,11 @@
 
     </LinearLayout>
 
-    <ImageButton
+    <Button
         android:id="@+id/removeButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_width="145dp"
+        android:layout_height="145dp"
+        android:text="Remove from cart"
         android:contentDescription="Remove" />
 
 
