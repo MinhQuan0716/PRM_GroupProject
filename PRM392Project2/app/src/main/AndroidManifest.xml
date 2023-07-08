@@ -22,13 +22,13 @@
             android:name=".SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".SignInActivity"
+            android:name=".ProductActivity"
             android:exported="false" />
         <activity
             android:name=".ProductDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ProductActivity"
+            android:name=".SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

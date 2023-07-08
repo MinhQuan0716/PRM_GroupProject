@@ -1,10 +1,10 @@
 package com.example.prm392_project_2.dtos;
 
 public class Account extends BaseEntity{
-    private String username = "";
-    private String password = "";
-    private String fullname = "";
-    private String avatar = null;
+    private String username ;
+    private String password ;
+    private String fullname ;
+    private String avatar ;
 
     public Account() {
         super();
