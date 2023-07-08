@@ -3,6 +3,7 @@ package com.example.prm392_project_2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     TextView txtProductDescripton;
     ImageView productImageView;
     ProductService productService;
+    private int REQUEST_CART=1;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_productdetail);
@@ -48,6 +50,14 @@ public class ProductDetailActivity extends AppCompatActivity {
                 txtProductName.setText(product.getProductName());
                 txtProductPrice.setText(String.valueOf(product.getPrice()));
                 Picasso.get().load(product.getImgPath()).into(productImageView);
+                btnAddToCart.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent =new Intent(ProductDetailActivity.this,CartActivity.class);
+                        intent.putExtra("productData",product);
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override
@@ -57,5 +67,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                 Log.e("API Error", errorMessage);
             }
         });
+
     }
-}
+  }

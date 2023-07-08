@@ -1,6 +1,8 @@
 package com.example.prm392_project_2.dtos;
 
-public class OrderDetail extends BaseEntity {
+import java.io.Serializable;
+
+public class OrderDetail extends BaseEntity implements Serializable {
     private Integer accountId;
     private Integer productId;
     private Account account;
