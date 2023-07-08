@@ -16,7 +16,7 @@ public interface AccountService {
     @GET(PATH)
     Call<Account[]> getAllAccounts();
     @GET(PATH +"/{id}")
-    Call<Account> getAllAccounts(@Path("id") Object id);
+    Call<Account> getAccountByID(@Path("id") Object id);
     @POST(PATH)
     Call<Account> createAccount(@Body Account newAccount);
     @PUT(PATH +"/{id}")

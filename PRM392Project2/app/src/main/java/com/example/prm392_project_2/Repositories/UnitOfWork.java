@@ -12,7 +12,7 @@ public class UnitOfWork {
     public  static OrderDetailService getOrderDetailService(){
         return APIClient.getClient().create(OrderDetailService.class);
     }
-    public  static ProductService getProductService(){
+    public  static ProductService getProductService() {
         return APIClient.getClient().create(ProductService.class);
     }
 }

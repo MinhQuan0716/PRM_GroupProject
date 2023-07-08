@@ -1,6 +1,8 @@
 package com.example.prm392_project_2.dtos;
 
-public class BaseEntity {
+import java.io.Serializable;
+
+public class BaseEntity implements Serializable {
 
 
     private int id;

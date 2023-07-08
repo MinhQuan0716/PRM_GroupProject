@@ -11,12 +11,12 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ProductService {
-     String PATH = "Product";
+     String PATH = "Products";
 
     @GET(PATH)
     Call<Product[]> getAllProducts();
     @GET(PATH +"/{id}")
-    Call<Product> getAllProducts(@Path("id") Object id);
+    Call<Product> getProductById(@Path("id") Object id);
     @POST(PATH)
     Call<Product> createProduct(@Body Product newProduct);
     @PUT(PATH +"/{id}")
