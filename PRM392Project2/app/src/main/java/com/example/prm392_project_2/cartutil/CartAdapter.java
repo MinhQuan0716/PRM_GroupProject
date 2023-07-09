@@ -14,7 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.prm392_project_2.ProductActivity;
+import com.example.prm392_project_2.MainActivity;
 import com.example.prm392_project_2.R;
 import com.example.prm392_project_2.dtos.Product;
 import com.squareup.picasso.Picasso;
@@ -70,7 +70,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 CartItem cartItem1=cartItems.get(position);
                 cartItems.remove(cartItem1);
                 new DeleteCartItemTask(cartDAO).execute(cartItem1);
-                Intent intent = new Intent(context, ProductActivity.class);
+                Intent intent = new Intent(context, MainActivity.class);
                 context.startActivity(intent);
             }
         });

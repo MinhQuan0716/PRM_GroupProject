@@ -97,7 +97,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 }
                 if(isExisted){
-                    Intent intent=new Intent(SignInActivity.this,ProductActivity.class);
+                    Intent intent=new Intent(SignInActivity.this, MainActivity.class);
                     startActivity(intent);
                 } else {
                     Toast.makeText(SignInActivity.this, "Account not exsited", Toast.LENGTH_LONG).show();
