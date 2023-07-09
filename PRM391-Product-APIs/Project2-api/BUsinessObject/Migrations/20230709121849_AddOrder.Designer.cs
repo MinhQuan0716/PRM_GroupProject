@@ -12,19 +12,19 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObject.Migrations
 {
     [DbContext(typeof(PlantShopContext))]
-    [Migration("20230627012600_InitMigraiton")]
-    partial class InitMigraiton
+    [Migration("20230709121849_AddOrder")]
+    partial class AddOrder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.14")
+                .HasAnnotation("ProductVersion", "6.0.18")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("BUsinessObject.Account", b =>
+            modelBuilder.Entity("BusinessObject.Account", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,6 +46,9 @@ namespace BusinessObject.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("RoleName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -56,7 +59,7 @@ namespace BusinessObject.Migrations
                     b.ToTable("Accounts");
                 });
 
-            modelBuilder.Entity("BUsinessObject.OrderDetail", b =>
+            modelBuilder.Entity("BusinessObject.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,6 +70,43 @@ namespace BusinessObject.Migrations
                     b.Property<int?>("AccountId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ShipFee")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalPrice")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("isPayed")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("BusinessObject.OrderDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
@@ -74,12 +114,14 @@ namespace BusinessObject.Migrations
 
                     b.HasIndex("AccountId");
 
+                    b.HasIndex("OrderId");
+
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("BUsinessObject.Product", b =>
+            modelBuilder.Entity("BusinessObject.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -106,27 +148,45 @@ namespace BusinessObject.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("BUsinessObject.OrderDetail", b =>
+            modelBuilder.Entity("BusinessObject.Order", b =>
                 {
-                    b.HasOne("BUsinessObject.Account", "Account")
+                    b.HasOne("BusinessObject.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId");
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("BusinessObject.OrderDetail", b =>
+                {
+                    b.HasOne("BusinessObject.Account", null)
                         .WithMany("OrderDetails")
                         .HasForeignKey("AccountId");
 
-                    b.HasOne("BUsinessObject.Product", "Product")
+                    b.HasOne("BusinessObject.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("BusinessObject.Product", "Product")
                         .WithMany("OrderDetailsOrdered")
                         .HasForeignKey("ProductId");
 
-                    b.Navigation("Account");
+                    b.Navigation("Order");
 
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("BUsinessObject.Account", b =>
+            modelBuilder.Entity("BusinessObject.Account", b =>
                 {
                     b.Navigation("OrderDetails");
                 });
 
-            modelBuilder.Entity("BUsinessObject.Product", b =>
+            modelBuilder.Entity("BusinessObject.Order", b =>
+                {
+                    b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("BusinessObject.Product", b =>
                 {
                     b.Navigation("OrderDetailsOrdered");
                 });

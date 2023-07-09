@@ -12,19 +12,19 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObject.Migrations
 {
     [DbContext(typeof(PlantShopContext))]
-    [Migration("20230627012825_Initmigration")]
-    partial class Initmigration
+    [Migration("20230708123109_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.14")
+                .HasAnnotation("ProductVersion", "6.0.18")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("BUsinessObject.Account", b =>
+            modelBuilder.Entity("BusinessObject.Account", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,6 +46,9 @@ namespace BusinessObject.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("RoleName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -56,7 +59,7 @@ namespace BusinessObject.Migrations
                     b.ToTable("Accounts");
                 });
 
-            modelBuilder.Entity("BUsinessObject.OrderDetail", b =>
+            modelBuilder.Entity("BusinessObject.OrderDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -79,7 +82,7 @@ namespace BusinessObject.Migrations
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("BUsinessObject.Product", b =>
+            modelBuilder.Entity("BusinessObject.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -106,13 +109,13 @@ namespace BusinessObject.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("BUsinessObject.OrderDetail", b =>
+            modelBuilder.Entity("BusinessObject.OrderDetail", b =>
                 {
-                    b.HasOne("BUsinessObject.Account", "Account")
+                    b.HasOne("BusinessObject.Account", "Account")
                         .WithMany("OrderDetails")
                         .HasForeignKey("AccountId");
 
-                    b.HasOne("BUsinessObject.Product", "Product")
+                    b.HasOne("BusinessObject.Product", "Product")
                         .WithMany("OrderDetailsOrdered")
                         .HasForeignKey("ProductId");
 
@@ -121,12 +124,12 @@ namespace BusinessObject.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("BUsinessObject.Account", b =>
+            modelBuilder.Entity("BusinessObject.Account", b =>
                 {
                     b.Navigation("OrderDetails");
                 });
 
-            modelBuilder.Entity("BUsinessObject.Product", b =>
+            modelBuilder.Entity("BusinessObject.Product", b =>
                 {
                     b.Navigation("OrderDetailsOrdered");
                 });

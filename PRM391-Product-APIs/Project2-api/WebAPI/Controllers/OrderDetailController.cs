@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
         public IActionResult Get()
         {
 
-            List<OrderDetail> orderList = _context.OrderDetails.Include(x=>x.Product).Include(x=>x.Account).ToList();
+            List<OrderDetail> orderList = _context.OrderDetails.Include(x=>x.Product).Include(x=>x.Order).ToList();
             return orderList.Count > 0 ? Ok(orderList) : NotFound();
         }
 
@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var orderDetail = _context.OrderDetails.Include(x => x.Product).Include(x => x.Account).FirstOrDefault(x => x.Id == id);
+            var orderDetail = _context.OrderDetails.Include(x => x.Product).Include(x => x.Order).FirstOrDefault(x => x.Id == id);
 
             if (orderDetail == null)
             {
