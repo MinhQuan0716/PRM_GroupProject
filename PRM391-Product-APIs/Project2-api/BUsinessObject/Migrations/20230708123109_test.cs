@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations.Operations.Builders;
 
 #nullable disable
 
 namespace BusinessObject.Migrations
 {
-    public partial class InitMigraiton : Migration
+    public partial class test : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
+           /* migrationBuilder.CreateTable(
                 name: "Accounts",
                 columns: table => new
                 {
@@ -17,14 +18,21 @@ namespace BusinessObject.Migrations
                     Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Fullname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Avatar = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true)
+                    Avatar = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Accounts", x => x.Id);
                 });
-
-            migrationBuilder.CreateTable(
+            */
+            migrationBuilder.AddColumn<string>(
+                name: "RoleName",
+                table: "Accounts",
+                type:"nvarchar(20)",
+                maxLength:20,
+                nullable:true
+                );
+         /*   migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -72,7 +80,7 @@ namespace BusinessObject.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_ProductId",
                 table: "OrderDetails",
-                column: "ProductId");
+                column: "ProductId");*/
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
