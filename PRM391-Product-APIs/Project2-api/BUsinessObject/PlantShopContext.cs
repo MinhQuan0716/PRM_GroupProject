@@ -20,9 +20,15 @@ namespace BusinessObject
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("server= (local); database = GroupProject;uid=sa; pwd =12345; TrustServerCertificate=True;\"");
+            }
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -58,7 +64,7 @@ namespace BusinessObject
                 .RuleFor(a => a.Password, f => f.Internet.Password())
                 .RuleFor(a => a.Fullname, f => f.Name.FullName())
                 .RuleFor(a => a.Avatar, f => f.Image.PicsumUrl());
-                return faker.Generate(count);
+            return faker.Generate(count);
         }
 
         private List<Product> CreateProductSeedData(int count)
