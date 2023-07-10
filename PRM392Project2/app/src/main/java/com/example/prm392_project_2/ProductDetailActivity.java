@@ -90,7 +90,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 .setContentTitle("Order has been added")
                 .setContentText("Your order has been added to your cart")
                 .setSmallIcon(R.drawable.baseline_shopping_cart_24)
-//                .setLargeIcon(bitmap)
+                .setLargeIcon(bitmap)
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
