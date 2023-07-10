@@ -68,6 +68,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         Intent intent = new Intent(ProductDetailActivity.this, CartActivity.class);
                         intent.putExtra("productData", product);
+                        sendNotification();
                         startActivity(intent);
                     }
                 });
