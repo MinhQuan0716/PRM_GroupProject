@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BusinessObject
@@ -13,7 +14,10 @@ namespace BusinessObject
 		public string Address { get; set; } = null;
 		public int? AccountId { get; set; }	
 		public bool isPayed { get; set; }
-		public virtual Account? Account { get; set; }
-		public virtual ICollection<OrderDetail> OrderDetails { get;}
+
+
+		public virtual Account? Account { get; set; } = default;
+	
+		public virtual ICollection<OrderDetail>? OrderDetails { get; set; } = default;
 	}
 }
