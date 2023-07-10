@@ -87,8 +87,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
 
         Notification notification = new NotificationCompat.Builder(this, NotificationChannel.CHANNEL_ID)
-                .setContentTitle("Title push notification")
-                .setContentText("Message push notification")
+                .setContentTitle("Order has been added")
+                .setContentText("Your order has been added to your cart in " + new Date().getTime())
                 .setSmallIcon(R.drawable.baseline_shopping_cart_24)
 //                .setLargeIcon(bitmap)
                 .build();
