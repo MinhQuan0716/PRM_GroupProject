@@ -15,6 +15,7 @@ namespace BusinessObject
         public string Fullname { get; set; } = string.Empty;
         [MaxLength(5000)]
         public string? Avatar { get; set; } = string.Empty;
+        public string? RoleName { get; set; } = string.Empty;
 
         public virtual ICollection<OrderDetail>? OrderDetails { get; set; } = null;
 

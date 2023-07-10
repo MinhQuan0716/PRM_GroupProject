@@ -35,16 +35,18 @@ import retrofit2.Response;
 public class ProductDetailActivity extends AppCompatActivity {
     TextView txtProductName;
     TextView txtProductPrice;
-    TextView txtProductDescripton;
+    TextView txtProductDescription;
     ImageView productImageView;
     ProductService productService;
+    Button btnAddToCart;
+
     private int REQUEST_CART = 1;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_productdetail);
         txtProductName = (TextView) findViewById(R.id.productName);
-        txtProductDescripton = (TextView) findViewById(R.id.productDescription);
+        txtProductDescription = (TextView) findViewById(R.id.productDescription);
         txtProductPrice = (TextView) findViewById(R.id.productPrice);
         productImageView = (ImageView) findViewById(R.id.prouctimageView);
         Button btnAddToCart = (Button) findViewById(R.id.btnAddToCart);
@@ -59,16 +61,16 @@ public class ProductDetailActivity extends AppCompatActivity {
                 if (product == null) {
                     return;
                 }
-                txtProductDescripton.setText(product.getDescription());
+                txtProductDescription.setText(product.getDescription());
                 txtProductName.setText(product.getProductName());
                 txtProductPrice.setText(String.valueOf(product.getPrice()));
                 Picasso.get().load(product.getImgPath()).into(productImageView);
                 btnAddToCart.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(ProductDetailActivity.this, CartActivity.class);
-                        intent.putExtra("productData", product);
                         sendNotification();
+                        Intent intent =new Intent(ProductDetailActivity.this, MainActivity.class);
+                        intent.putExtra("productData",product);
                         startActivity(intent);
                     }
                 });

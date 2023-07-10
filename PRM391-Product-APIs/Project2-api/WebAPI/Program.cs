@@ -1,6 +1,7 @@
 using BusinessObject;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -9,14 +10,15 @@ builder.Services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.Re
     .AddMvcOptions(x => x.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 string connectionString;
 if (builder.Environment.IsDevelopment())
 {
-    connectionString = configuration["ConnectionStrings:Default"];
+	connectionString = configuration["ConnectionStrings:Default"];
 }
 else
 {
-    connectionString = configuration["ConnectionStrings:Production"];
+	connectionString = configuration["ConnectionStrings:Production"];
 }
 builder.Services.AddDbContext<PlantShopContext>(opt => opt.UseSqlServer(connectionString));
 builder.Services.AddCors(options =>
@@ -57,7 +59,8 @@ void SeedDatabase()
             var context = services.GetRequiredService<PlantShopContext>();
             //context.Database.EnsureCreated(); // Ensure the database is created
 
-            context.SeedData(); // Seed the data
+          context.SeedData(); 
+           // Seed the data
         }
         catch (Exception ex)
         {

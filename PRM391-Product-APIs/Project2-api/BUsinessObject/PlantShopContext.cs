@@ -20,15 +20,21 @@ namespace BusinessObject
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("server= (local); database = GroupProject;uid=sa; pwd =12345; TrustServerCertificate=True;\"");
+            }
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<OrderDetail>().HasOne(x => x.Product).WithMany(x => x.OrderDetailsOrdered).HasForeignKey(x => x.ProductId);
-            builder.Entity<OrderDetail>().HasOne(x => x.Account).WithMany(x => x.OrderDetails).HasForeignKey(x => x.AccountId);
+            builder.Entity<OrderDetail>().HasOne(x => x.Order).WithMany(x => x.OrderDetails).HasForeignKey(x => x.OrderId);
             OnModelCreatingPartial(builder);
         }
         public void SeedData()
@@ -58,7 +64,6 @@ namespace BusinessObject
                 .RuleFor(a => a.Password, f => f.Internet.Password())
                 .RuleFor(a => a.Fullname, f => f.Name.FullName())
                 .RuleFor(a => a.Avatar, f => f.Image.PicsumUrl());
-
             return faker.Generate(count);
         }
 
@@ -95,7 +100,6 @@ namespace BusinessObject
                 {
                     orderDetails.Add(new OrderDetail
                     {
-                        Account = account,
                         Product = product
                     });
 
