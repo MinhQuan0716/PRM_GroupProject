@@ -88,7 +88,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         Notification notification = new NotificationCompat.Builder(this, NotificationChannel.CHANNEL_ID)
                 .setContentTitle("Order has been added")
-                .setContentText("Your order has been added to your cart in " + new Date().getTime())
+                .setContentText("Your order has been added to your cart")
                 .setSmallIcon(R.drawable.baseline_shopping_cart_24)
 //                .setLargeIcon(bitmap)
                 .build();
