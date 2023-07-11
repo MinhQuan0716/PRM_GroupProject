@@ -1,6 +1,12 @@
 package com.example.prm392_project_2;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,8 +16,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
 import androidx.room.Room;
 
+
+import com.example.prm392_project_2.Repositories.NotificationChannel;
 import com.example.prm392_project_2.Repositories.UnitOfWork;
 import com.example.prm392_project_2.Services.ProductService;
 import com.example.prm392_project_2.cartutil.CartDAO;
@@ -20,8 +33,12 @@ import com.example.prm392_project_2.cartutil.CartItem;
 import com.example.prm392_project_2.dtos.Product;
 import com.squareup.picasso.Picasso;
 
+
+import java.util.Date;
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,22 +62,20 @@ public class ProductDetailActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_productdetail);
-
-        txtProductName=(TextView) findViewById(R.id.productName);
-        txtProductDescription =(TextView) findViewById(R.id.productDescription);
-        txtProductPrice=(TextView) findViewById(R.id.productPrice);
-        productImageView=(ImageView) findViewById(R.id.prouctimageView);
-        btnAddToCart =(Button) findViewById(R.id.btnAddToCart);
-        productService= UnitOfWork.getProductService();
-
+        txtProductName = (TextView) findViewById(R.id.productName);
+        txtProductDescription = (TextView) findViewById(R.id.productDescription);
+        txtProductPrice = (TextView) findViewById(R.id.productPrice);
+        productImageView = (ImageView) findViewById(R.id.prouctimageView);
+        Button btnAddToCart = (Button) findViewById(R.id.btnAddToCart);
+        productService = UnitOfWork.getProductService();
         Intent intent = getIntent();
-        int productId = intent.getIntExtra("productId",0);
-        Call<Product> call =productService.getProductById(productId);
+        int productId = intent.getIntExtra("productId", 0);
+        Call<Product> call = productService.getProductById(productId);
         call.enqueue(new Callback<Product>() {
             @Override
             public void onResponse(Call<Product> call, Response<Product> response) {
-                Product product =response.body();
-                if(product==null){
+                Product product = response.body();
+                if (product == null) {
                     return;
                 }
                 txtProductDescription.setText(product.getDescription());
@@ -70,8 +85,15 @@ public class ProductDetailActivity extends AppCompatActivity {
                 btnAddToCart.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+                        sendNotification();
+                        Intent intent =new Intent(ProductDetailActivity.this, MainActivity.class);
+                        intent.putExtra("productData",product);
+                        startActivity(intent);
+
                         submitCart(product);
                         Toast.makeText(ProductDetailActivity.this, "Add to cart", Toast.LENGTH_SHORT).show();
+
                     }
                 });
             }
@@ -84,6 +106,25 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    private void sendNotification() {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+
+        Notification notification = new NotificationCompat.Builder(this, NotificationChannel.CHANNEL_ID)
+                .setContentTitle("Order has been added")
+                .setContentText("Your order has been added to your cart")
+                .setSmallIcon(R.drawable.baseline_shopping_cart_24)
+                .setLargeIcon(bitmap)
+                .build();
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.notify(getNotificationId(), notification);
+        }
+    }
+    private int getNotificationId(){
+        return (int) new Date().getTime();
 
     private void submitCart(Product product) {
         cartDatabase = Room.databaseBuilder(ProductDetailActivity.this,
@@ -118,4 +159,4 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         }).start();
     }
-  }
+}
