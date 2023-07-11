@@ -8,6 +8,6 @@ namespace BusinessObject
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [JsonProperty(Order = -2)]
-        public int Id { get; set; }
+        public int? Id { get; set; }
     }
 }

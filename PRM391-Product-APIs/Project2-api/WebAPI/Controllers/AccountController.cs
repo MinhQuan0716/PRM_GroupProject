@@ -39,11 +39,7 @@ namespace WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult PutAccount(int id, Account account)
         {
-            if (id != account.Id)
-            {
-                return BadRequest();
-            }
-
+            account.Id ??= id;
             _context.Entry(account).State = EntityState.Modified;
 
             try
