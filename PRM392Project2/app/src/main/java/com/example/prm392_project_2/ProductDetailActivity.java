@@ -125,6 +125,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
     private int getNotificationId(){
         return (int) new Date().getTime();
+    }
 
     private void submitCart(Product product) {
         cartDatabase = Room.databaseBuilder(ProductDetailActivity.this,
