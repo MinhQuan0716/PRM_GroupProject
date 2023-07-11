@@ -16,17 +16,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import androidx.room.Room;
+
+
 import com.example.prm392_project_2.Repositories.NotificationChannel;
 import com.example.prm392_project_2.Repositories.UnitOfWork;
 import com.example.prm392_project_2.Services.ProductService;
+import com.example.prm392_project_2.cartutil.CartDAO;
+import com.example.prm392_project_2.cartutil.CartDatabase;
+import com.example.prm392_project_2.cartutil.CartItem;
 import com.example.prm392_project_2.dtos.Product;
 import com.squareup.picasso.Picasso;
 
+
 import java.util.Date;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,6 +51,11 @@ public class ProductDetailActivity extends AppCompatActivity {
     ImageView productImageView;
     ProductService productService;
     Button btnAddToCart;
+
+    private CartDatabase cartDatabase;
+    private CartDAO cartItemDao;
+    private ArrayList<CartItem> listCart;
+
 
     private int REQUEST_CART = 1;
 
@@ -68,10 +85,15 @@ public class ProductDetailActivity extends AppCompatActivity {
                 btnAddToCart.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         sendNotification();
                         Intent intent =new Intent(ProductDetailActivity.this, MainActivity.class);
                         intent.putExtra("productData",product);
                         startActivity(intent);
+
+                        submitCart(product);
+                        Toast.makeText(ProductDetailActivity.this, "Add to cart", Toast.LENGTH_SHORT).show();
+
                     }
                 });
             }
@@ -84,6 +106,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void sendNotification() {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
@@ -102,5 +125,38 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
     private int getNotificationId(){
         return (int) new Date().getTime();
+
+    private void submitCart(Product product) {
+        cartDatabase = Room.databaseBuilder(ProductDetailActivity.this,
+                CartDatabase.class, "cart-db").build();
+        cartItemDao = cartDatabase.cartDao();
+        new Thread(() -> {
+            List<CartItem> list = cartItemDao.getAll();
+            listCart = new ArrayList<>(list);
+            if(listCart == null) {
+                listCart=new ArrayList<>();
+            }
+            boolean productExists = false;
+            int existingProductIndex = -1;
+            if (product != null) {
+                for (int i = 0; i < listCart.size(); i++) {
+                    if (listCart.get(i).getProduct().equals(product)) {
+                        listCart.get(i).setQuantity(listCart.get(i).getQuantity() + 1);
+                        productExists = true;
+                        existingProductIndex = i;
+                        break;
+                    }
+                }
+
+                if (!productExists) {
+
+                    listCart.add(new CartItem(product, 1));
+                    cartDatabase.cartDao().insert(new CartItem(product,1));
+                } else {
+                    // Update the existing cart item in the database
+                    cartDatabase.cartDao().update(listCart.get(existingProductIndex));
+                }
+            }
+        }).start();
     }
 }

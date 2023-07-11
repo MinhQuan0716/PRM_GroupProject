@@ -92,7 +92,7 @@ public class HomeFragment extends Fragment {
                 for(Product product:produtcs){
                     listProduct.add(product);
                 }
-                ProductAdapter adapter=new ProductAdapter(listProduct,getActivity());
+                ProductAdapter adapter=new ProductAdapter(listProduct, getActivity());
                 productView.setAdapter(adapter);
 
             }

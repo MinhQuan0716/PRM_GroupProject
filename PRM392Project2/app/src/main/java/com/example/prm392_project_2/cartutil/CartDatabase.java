@@ -18,7 +18,6 @@ public abstract class CartDatabase extends RoomDatabase {
 
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-
             database.execSQL("DROP TABLE IF EXISTS cartitem");
             database.execSQL("CREATE TABLE cartitem (cartId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, product TEXT, quantity INTEGER NOT NULL)");
         }

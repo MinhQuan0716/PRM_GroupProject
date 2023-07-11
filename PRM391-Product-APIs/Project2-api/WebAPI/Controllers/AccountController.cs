@@ -1,4 +1,5 @@
 ﻿using BusinessObject;
+using BusinessObject.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -38,11 +39,7 @@ namespace WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult PutAccount(int id, Account account)
         {
-            if (id != account.Id)
-            {
-                return BadRequest();
-            }
-
+            account.Id ??= id;
             _context.Entry(account).State = EntityState.Modified;
 
             try
@@ -66,12 +63,20 @@ namespace WebAPI.Controllers
 
         // POST: api/Account
         [HttpPost]
-        public ActionResult<Account> PostAccount(Account account)
+        public ActionResult<Account> PostAccount(RegisterFormat account)
         {
-            _context.Accounts.Add(account);
+            Account newAccount = new Account
+            {
+                Avatar = "ahihi",
+                Fullname = account.FullName,
+                Username = account.UserName,
+                Password = account.Password,
+
+            };
+            _context.Accounts.Add(newAccount);
             _context.SaveChanges();
 
-            return CreatedAtAction(nameof(GetAccount), new { id = account.Id }, account);
+            return CreatedAtAction(nameof(GetAccount), new { id = newAccount.Id }, newAccount);
         }
 
         // DELETE: api/Account/5

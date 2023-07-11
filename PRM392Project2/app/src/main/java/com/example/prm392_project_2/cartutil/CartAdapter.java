@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.prm392_project_2.CartFragment;
 import com.example.prm392_project_2.MainActivity;
 import com.example.prm392_project_2.R;
 import com.example.prm392_project_2.dtos.Product;
@@ -36,7 +38,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         private TextView priceTextView;
         private TextView quantityTextView;
         private ImageView productImageView;
-        private Button removeFromCart;
+        private ImageButton removeFromCart;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -44,7 +46,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             priceTextView = itemView.findViewById(R.id.priceTextView);
             quantityTextView = itemView.findViewById(R.id.quantityTextView);
             productImageView = itemView.findViewById(R.id.cartImageView);
-            removeFromCart=itemView.findViewById(R.id.removeButton);
+            removeFromCart = itemView.findViewById(R.id.removeButton);
         }
     }
 
@@ -71,6 +73,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 cartItems.remove(cartItem1);
                 new DeleteCartItemTask(cartDAO).execute(cartItem1);
                 Intent intent = new Intent(context, MainActivity.class);
+                intent.putExtra("nav", 2);
                 context.startActivity(intent);
             }
         });
