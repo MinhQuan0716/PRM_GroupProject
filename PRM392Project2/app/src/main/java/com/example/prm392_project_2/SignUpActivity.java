@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,11 @@ import android.widget.Toast;
 
 import com.example.prm392_project_2.Repositories.UnitOfWork;
 import com.example.prm392_project_2.Services.AccountService;
+import com.example.prm392_project_2.dtos.Account;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -90,9 +96,32 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         if(checkInput() == false){
             return;
         }
+        String username=  etUsername.getText().toString();
+        String password= etPassword.getText().toString();
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+        Account account = new Account(username,password,"Default name");
+        try {
+            Call<Account> call = accountService.createAccount(account);
+            call.enqueue(new Callback<Account>() {
+                @Override
+                public void onResponse(Call<Account> call, Response<Account> response) {
+                        if(response.body()!= null){
+                            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                }
+
+                @Override
+                public void onFailure(Call<Account> call, Throwable t) {
+Toast.makeText(SignUpActivity.this,"Check you account again",Toast.LENGTH_LONG).show();}
+
+            });
+
+        }catch (Exception e){
+            Log.d("Error",e.getMessage());
+        }
+
+
     }
 }
