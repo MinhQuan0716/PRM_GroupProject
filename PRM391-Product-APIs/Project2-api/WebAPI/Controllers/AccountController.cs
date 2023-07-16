@@ -34,7 +34,13 @@ namespace WebAPI.Controllers
 
             return account != null ? Ok(account) : NotFound();
         }
-
+        [HttpGet]
+        public IActionResult Login(string username,string password )
+        {
+            var account = _context.Accounts.Include(x => x.OrderDetails).FirstOrDefault(x => x.Username == username);
+            if (account == null) return NotFound();
+            return account?.Password == password ? Ok(account) : BadRequest();
+        }
         // PUT: api/Account/5
         [HttpPut("{id}")]
         public IActionResult PutAccount(int id, Account account)
