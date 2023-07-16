@@ -26,7 +26,7 @@ namespace BusinessObject
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("server= (local); database = GroupProject;uid=sa; pwd =12345; TrustServerCertificate=True;\"");
+                optionsBuilder.UseSqlServer("server= (local); database = GroupProject;uid=sa; pwd =12345; TrustServerCertificate=True;");
             }
             base.OnConfiguring(optionsBuilder);
         }

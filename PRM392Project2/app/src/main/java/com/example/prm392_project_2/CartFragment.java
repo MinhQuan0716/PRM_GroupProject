@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.prm392_project_2.cartutil.CartAdapter;
 import com.example.prm392_project_2.cartutil.CartDAO;
@@ -38,8 +40,9 @@ public class CartFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private TextView tvTotalPrice;
+    private Button btnCheckout;
     private ArrayList<CartItem> listCart;
-    private SharedPreferences sharedPreferences;
     private CartDatabase cartDatabase;
     private CartDAO cartItemDao;
     private RecyclerView cartView;
@@ -79,43 +82,32 @@ public class CartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
-        cartView = (RecyclerView) view.findViewById(R.id.cartList1);
-        Intent intent = getActivity().getIntent();
-        Product product = (Product) intent.getSerializableExtra("productData");
-
+        cartView = (RecyclerView) view.findViewById(R.id.cartList);
+        tvTotalPrice = view.findViewById(R.id.tvTotalPrice);
+        btnCheckout = view.findViewById(R.id.btnCheckout);
         // Initialize Room Database
         cartDatabase = Room.databaseBuilder(getActivity(),
                 CartDatabase.class, "cart-db").build();
         cartItemDao = cartDatabase.cartDao();
+        btnCheckout.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), SubmitCartActivity.class);
+            startActivity(intent);
+        });
+        btnCheckout.setEnabled(false);
+
         // Retrieve cart items asynchronously
         new Thread(() -> {
             listCart = new ArrayList<>(cartItemDao.getAll());
-            if(listCart==null) {listCart=new ArrayList<>();}
-            boolean productExists = false;
-            int existingProductIndex = -1;
-            if (product != null) {
-
-
-                for (int i = 0; i < listCart.size(); i++) {
-                    if (listCart.get(i).getProduct().equals(product)) {
-                        listCart.get(i).setQuantity(listCart.get(i).getQuantity() + 1);
-                        productExists = true;
-                        existingProductIndex = i;
-                        break;
-                    }
-                }
-            }
-            if (!productExists) {
-
-                listCart.add(new CartItem(product, 1));
-                cartDatabase.cartDao().insert(new CartItem(product,1));
-            } else {
-                // Update the existing cart item in the database
-                cartDatabase.cartDao().update(listCart.get(existingProductIndex));
-            }
             // Update UI on the main thread
-
             getActivity().runOnUiThread(() -> {
+                int totalPrice = 0;
+                for (CartItem item : listCart) {
+                    totalPrice += item.getQuantity() * item.getProduct().getPrice();
+                }
+                tvTotalPrice.setText("Total: $" + String.valueOf(totalPrice));
+                if (totalPrice > 0) {
+                    btnCheckout.setEnabled(true);
+                }
                 CartAdapter adapter = new CartAdapter(listCart,cartItemDao,getActivity());
                 cartView.setAdapter(adapter);
                 cartView.setLayoutManager(new LinearLayoutManager(getActivity()));

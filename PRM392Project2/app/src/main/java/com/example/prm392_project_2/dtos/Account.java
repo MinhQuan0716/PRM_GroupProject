@@ -17,6 +17,12 @@ public class Account extends BaseEntity{
         this.avatar = avatar;
     }
 
+    public Account(String username,String password,String fullname){
+        this.username =username;
+        this.password = password;
+        this.fullname = fullname;
+    }
+
     public String getUsername() {
         return username;
     }

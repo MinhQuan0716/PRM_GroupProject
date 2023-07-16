@@ -3,6 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:layout_marginTop="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
     >
     <ImageView
         android:id="@+id/cartImageView"
@@ -49,12 +52,16 @@
 
     </LinearLayout>
 
-    <Button
+    <ImageButton
         android:id="@+id/removeButton"
-        android:layout_width="145dp"
-        android:layout_height="145dp"
-        android:text="Remove from cart"
-        android:contentDescription="Remove" />
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/baseline_delete_24"
+        android:background="@drawable/layout_border2"
+        android:textColor="@color/color5"
 
-
+        />
 </LinearLayout>
