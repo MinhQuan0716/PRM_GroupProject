@@ -17,6 +17,12 @@ There are currently 2 projects in this repository **(7/17/2023)**
   - API Call with CRUD (C# Database)
 
 Finally our contributors </br>
+<style>
+  img[width=100]{
+    border-radius:100px;
+    margin:25px;
+  }
+  </style>
 <img width="100" height="100" src="https://avatars.githubusercontent.com/u/107088923?s=64&v=4" alt="MinhQuan0716"/>
 <img width="100" height="100"  src="https://avatars.githubusercontent.com/u/97070754?s=96&v=4" alt="hvpexe"/>
 <img width="100" height="100"  src="https://avatars.githubusercontent.com/u/99975060?s=96&v=4" alt="Nang13"/>
