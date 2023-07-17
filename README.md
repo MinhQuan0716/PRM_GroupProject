@@ -18,12 +18,11 @@ There are currently 2 projects in this repository **(7/17/2023)**
 
 Finally our contributors </br>
 
-<img width="100" height="100" style="border-radius:200px" src="https://avatars.githubusercontent.com/u/107088923?s=64&v=4" alt="MinhQuan0716"/>
-<img width="100" height="100" style="border-radius:200px"  src="https://avatars.githubusercontent.com/u/97070754?s=96&v=4" alt="hvpexe"/>
-<img width="100" height="100" style="border-radius:200px"  src="https://avatars.githubusercontent.com/u/99975060?s=96&v=4" alt="Nang13"/>
-<img width="100" height="100" style="border-radius:200px"  src="https://avatars.githubusercontent.com/u/98044466?v=4" alt="moo-light"/>
-<img width="100" height="100" style="border-radius:200px"  src="https://avatars.githubusercontent.com/u/97486638?s=64&v=4" alt="quangvdm"/>
-<img width="100" height="100" style="border-radius:200px"  src="https://avatars.githubusercontent.com/u/105278011?s=64&v=4" alt="tuan-tu9173"/>
-  
-  
+<img width="100" height="100" style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/107088923?s=64&v=4" alt="MinhQuan0716"/>
+<img width="100" height="100" style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/97070754?s=96&v=4" alt="hvpexe"/>
+<img width="100" height="100" style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/99975060?s=96&v=4" alt="Nang13"/>
+<img width="100" height="100" style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/98044466?v=4" alt="moo-light"/>
+<img width="100" height="100" style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/97486638?s=64&v=4" alt="quangvdm"/>
+<img width="100" height="100" style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/105278011?s=64&v=4" alt="tuan-tu9173"/>
+
   
