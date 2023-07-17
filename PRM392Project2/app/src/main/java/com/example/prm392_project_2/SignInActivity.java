@@ -14,7 +14,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prm392_project_2.Repositories.UnitOfWork;
 import com.example.prm392_project_2.Services.AccountService;
+import com.example.prm392_project_2.databinding.ActivitySignInBinding;
 import com.example.prm392_project_2.dtos.Account;
+import com.example.prm392_project_2.utilities.Constants;
+import com.example.prm392_project_2.utilities.PreferenceManager;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -23,41 +28,39 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignInActivity extends AppCompatActivity {
     private static final String REQUIRE = "Required";
-    EditText etUsername,etPassword;
-    TextView tvNoAcount;
-    Button btnSignIn;
+
     ArrayList<Account>  listAccount;
     AccountService accountService;
+
+    private ActivitySignInBinding binding;
+    private PreferenceManager preferenceManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_login);
+
         //call service
         accountService= UnitOfWork.getAccountService();
-        // Reference from Layout
 
-        etUsername = findViewById(R.id.etUsername);
-        etPassword = findViewById(R.id.etPassword);
-        tvNoAcount = findViewById(R.id.tvNoAccount);
-        btnSignIn = findViewById(R.id.btnLogin);
+        preferenceManager = new PreferenceManager(getApplicationContext());
 
-        // Register event
-        tvNoAcount.setOnClickListener(this);
-        //Login event
-        btnSignIn.setOnClickListener(this);
+        binding = ActivitySignInBinding.inflate(getLayoutInflater());
+
+        setContentView(binding.getRoot());
+
+        setListeners();
     }
 
-    @Override
-    public void onClick(View v) {
-        int vId = v.getId();
-        if(vId == R.id.btnLogin){
+
+    private void setListeners() {
+        binding.btnLogin.setOnClickListener(view -> {
             signIn();
-        }
-        if(vId == R.id.tvNoAccount){
+            signInF();
+        });
+        binding.tvNoAccount.setOnClickListener(view -> {
             signUpForm();
-        }
+        });
     }
 
     private void signUpForm() {
@@ -67,13 +70,13 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     }
     private boolean checkInput() {
         // Username
-        if (TextUtils.isEmpty(etUsername.getText().toString())) {
-            etUsername.setError(REQUIRE);
+        if (binding.etUsername.getText().toString().trim().isEmpty()) {
+            showToast("Invalid Username");
             return false;
         }
         // Password
-        if (TextUtils.isEmpty(etPassword.getText().toString())) {
-            etPassword.setError(REQUIRE);
+        if (binding.etPassword.getText().toString().trim().isEmpty()) {
+            showToast("Invalid Password");
             return false;
         }
         // VaLid
@@ -83,7 +86,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         if(checkInput()==false){
             return;
         }
-        Call<Account> call=accountService.login(etUsername.getText().toString(),etPassword.getText().toString());
+        Call<Account> call=accountService.login(binding.etUsername.getText().toString(),binding.etPassword.getText().toString());
         call.enqueue(new Callback<Account>() {
             @Override
             public void onResponse(Call<Account> call, Response<Account> response) {
@@ -114,5 +117,26 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 Log.e("API Error", errorMessage);
             }
         });
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+    private void signInF() {
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        database.collection(Constants.KEY_COLLECTION_USERS)
+                .whereEqualTo(Constants.KEY_EMAIL, binding.etUsername.getText().toString())
+                .whereEqualTo(Constants.KEY_PASSWORD, binding.etPassword.getText().toString())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null
+                            && task.getResult().getDocuments().size() > 0){
+                        DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                        preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN,true);
+                        preferenceManager.putString(Constants.KEY_USER_ID,documentSnapshot.getId());
+                        preferenceManager.putString(Constants.KEY_NAME,documentSnapshot.getString(Constants.KEY_NAME));
+                        preferenceManager.putString(Constants.KEY_IMAGE,documentSnapshot.getString(Constants.KEY_IMAGE));
+                    }
+                });
     }
 }

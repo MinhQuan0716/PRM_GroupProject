@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 
 import com.example.prm392_project_2.databinding.ActivityMainBinding;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new HomeFragment());
             }
             if (item.getItemId() == R.id.navigation_message) {
-                replaceFragment(new MessageFragment());
+                startActivity(new Intent(getApplicationContext(),MessageActivity.class));
             }
             if (item.getItemId() == R.id.navigation_cart) {
                 replaceFragment(new CartFragment());
@@ -54,4 +55,5 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
     }
+
 }
