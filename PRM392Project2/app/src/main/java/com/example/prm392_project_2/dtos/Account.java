@@ -1,11 +1,18 @@
 package com.example.prm392_project_2.dtos;
 
-public class Account extends BaseEntity{
+import com.google.gson.annotations.JsonAdapter;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Account extends BaseEntity implements Serializable {
     private String username ;
     private String password ;
     private String fullname ;
     private String avatar ;
-
+    private String roleName;
+    private ArrayList<OrderDetail> orderDetails;
     public Account() {
         super();
     }
@@ -17,10 +24,30 @@ public class Account extends BaseEntity{
         this.avatar = avatar;
     }
 
-    public Account(String username,String password,String fullname){
+
+
+
+
+    public Account(String username, String password, String fullname){
         this.username =username;
         this.password = password;
         this.fullname = fullname;
+    }
+
+    public ArrayList<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(ArrayList<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     public String getUsername() {

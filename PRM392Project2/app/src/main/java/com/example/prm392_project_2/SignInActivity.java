@@ -1,5 +1,6 @@
 package com.example.prm392_project_2;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.prm392_project_2.Repositories.UnitOfWork;
 import com.example.prm392_project_2.Services.AccountService;
 import com.example.prm392_project_2.dtos.Account;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -81,42 +83,36 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         if(checkInput()==false){
             return;
         }
-        Call<Account[]> call =accountService.getAllAccounts();
-        call.enqueue(new Callback<Account[]>() {
+        Call<Account> call=accountService.login(etUsername.getText().toString(),etPassword.getText().toString());
+        call.enqueue(new Callback<Account>() {
             @Override
-            public void onResponse(Call<Account[]> call, Response<Account[]> response) {
-                Account[] accounts = response.body();
-                if (accounts == null) {
+            public void onResponse(Call<Account> call, Response<Account> response) {
+                if(!response.isSuccessful()){
                     return;
-                }
-                boolean isExisted=false;
-                for (Account account : accounts) {
-                    if (etUsername.getText().toString().trim().equals(account.getUsername()) && etPassword.getText().toString().trim().equals(account.getPassword())) {
-                        isExisted = true;
-                        break;
-                    }
-                }
-                if(isExisted){
-                    Intent intent=new Intent(SignInActivity.this, MainActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(SignInActivity.this, "Account not exsited", Toast.LENGTH_LONG).show();
-                }
+                } else{
+                       Account loginAccount =response.body();
+                       if(loginAccount!=null){
+                           // Convert the loginAccount object to a string using Gson
+                           Gson gson = new Gson();
+                           String loginAccountJson = gson.toJson(loginAccount);
 
-
+// Save the loginAccount string to SharedPreferences
+                           SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                           SharedPreferences.Editor editor = preferences.edit();
+                           editor.putString("loginAccount", loginAccountJson);
+                           editor.apply();
+                           Intent intent=new Intent(SignInActivity.this,MainActivity.class);
+                           startActivity(intent);
+                       }
+                }
             }
 
-
-
-
             @Override
-            public void onFailure(Call<Account[]> call, Throwable t) {
+            public void onFailure(Call<Account> call, Throwable t) {
                 String errorMessage = "Load fail: " + t.getMessage();
                 Toast.makeText(SignInActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                 Log.e("API Error", errorMessage);
             }
         });
-
-
     }
 }

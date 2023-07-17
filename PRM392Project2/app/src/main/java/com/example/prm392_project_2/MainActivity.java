@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.prm392_project_2.databinding.ActivityMainBinding;
+import com.example.prm392_project_2.dtos.Account;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         Intent intent = getIntent();
+        Account account=(Account) intent.getSerializableExtra("Account");
         int val = intent.getIntExtra("nav", 0);
         setContentView(binding.getRoot());
         if (val == 2) {

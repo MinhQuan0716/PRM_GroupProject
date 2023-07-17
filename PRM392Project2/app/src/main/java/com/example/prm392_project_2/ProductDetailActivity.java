@@ -30,6 +30,7 @@ import com.example.prm392_project_2.Services.ProductService;
 import com.example.prm392_project_2.cartutil.CartDAO;
 import com.example.prm392_project_2.cartutil.CartDatabase;
 import com.example.prm392_project_2.cartutil.CartItem;
+import com.example.prm392_project_2.dtos.Account;
 import com.example.prm392_project_2.dtos.Product;
 import com.squareup.picasso.Picasso;
 
@@ -69,6 +70,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         Button btnAddToCart = (Button) findViewById(R.id.btnAddToCart);
         productService = UnitOfWork.getProductService();
         Intent intent = getIntent();
+        Account account =(Account) intent.getSerializableExtra("Account");
         int productId = intent.getIntExtra("productId", 0);
         Call<Product> call = productService.getProductById(productId);
         call.enqueue(new Callback<Product>() {

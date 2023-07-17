@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
 
             return NoContent();
         }
-        [HttpGet("{username},{password}")]
+      /*  [HttpGet("{username},{password}")]
         public ActionResult<Account> Login(string username,string password)
         { 
             var account= _context.Accounts.SingleOrDefault(x=>x.Username.Equals(username)&&x.Password.Equals(password));
@@ -75,7 +75,7 @@ namespace WebAPI.Controllers
                 return NotFound();  
             }
             return Ok(account);
-        }
+        }*/
         // POST: api/Account
         [HttpPost]
         public ActionResult<Account> PostAccount(RegisterFormat account)

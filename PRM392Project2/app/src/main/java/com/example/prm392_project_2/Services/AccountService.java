@@ -9,10 +9,12 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface AccountService {
     String PATH = "Account";
-
+    @GET(PATH+"/login")
+    Call<Account> login(@Query("username") String username, @Query("password") String password);
     @GET(PATH)
     Call<Account[]> getAllAccounts();
     @GET(PATH +"/{id}")
