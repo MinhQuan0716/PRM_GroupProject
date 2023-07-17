@@ -7,30 +7,38 @@
     tools:context=".SubmitCartActivity"
     android:orientation="vertical"
     >
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Your order"
-    android:layout_gravity="center"
-    android:textStyle="bold"
-    />
+
     <TextView
-        android:id="@+id/productName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="85dp"
+        android:layout_height="33dp"
         android:layout_gravity="center"
-        />
+        android:text="Your order"
+        android:textStyle="bold" />
+
     <TextView
-        android:id="@+id/productQuantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        />
+        android:id="@+id/totalPriceId"
+        android:layout_width="161dp"
+        android:layout_height="62dp"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/shipFeeID"
+        android:layout_width="151dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center" />
+
+    <EditText
+        android:id="@+id/adressInput"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="adress" />
+
     <Button
         android:id="@+id/btnPayment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Thanh toán"
         android:layout_gravity="center"
-        />
+        android:text="Thanh toán" />
 </LinearLayout>

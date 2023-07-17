@@ -46,6 +46,7 @@ public class CartFragment extends Fragment {
     private CartDatabase cartDatabase;
     private CartDAO cartItemDao;
     private RecyclerView cartView;
+    public  int TotalPriceTransfer;
     public CartFragment() {
         // Required empty public constructor
     }
@@ -91,6 +92,7 @@ public class CartFragment extends Fragment {
         cartItemDao = cartDatabase.cartDao();
         btnCheckout.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SubmitCartActivity.class);
+            intent.putExtra("TotalPrice", TotalPriceTransfer);
             startActivity(intent);
         });
         btnCheckout.setEnabled(false);
@@ -108,6 +110,7 @@ public class CartFragment extends Fragment {
                 if (totalPrice > 0) {
                     btnCheckout.setEnabled(true);
                 }
+                TotalPriceTransfer = totalPrice;
                 CartAdapter adapter = new CartAdapter(listCart,cartItemDao,getActivity());
                 cartView.setAdapter(adapter);
                 cartView.setLayoutManager(new LinearLayoutManager(getActivity()));

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prm392_project_2.dtos.Product;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -76,7 +73,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtProductDescription =itemView.findViewById(R.id.productDescription);
-            txtProductName=itemView.findViewById(R.id.productName);
+            txtProductName=itemView.findViewById(R.id.totalPriceId);
             txtProductPrice=itemView.findViewById(R.id.productPrice);
             productImage =itemView.findViewById(R.id.prouctimageView);
         }

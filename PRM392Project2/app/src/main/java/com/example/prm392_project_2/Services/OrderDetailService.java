@@ -1,6 +1,7 @@
 package com.example.prm392_project_2.Services;
 
 import com.example.prm392_project_2.dtos.OrderDetail;
+import com.example.prm392_project_2.dtos.SubmitCartFormat;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,7 +19,7 @@ public interface OrderDetailService {
     @GET(PATH +"/{id}")
     Call<OrderDetail> getAllOrderDetails(@Path("id") Object id);
     @POST(PATH)
-    Call<OrderDetail> createOrderDetail(@Body OrderDetail newOrderDetail);
+    Call<SubmitCartFormat> createOrderDetail(@Body SubmitCartFormat newOrderDetail);
     @PUT(PATH +"/{id}")
     Call<OrderDetail> updateOrderDetail(@Path("id") Object id, @Body OrderDetail orderDetail);
     @DELETE(PATH +"/{id}")

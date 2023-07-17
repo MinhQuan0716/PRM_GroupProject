@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,9 +16,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import androidx.room.Room;
 
@@ -63,7 +60,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_productdetail);
-        txtProductName = (TextView) findViewById(R.id.productName);
+        txtProductName = (TextView) findViewById(R.id.totalPriceId);
         txtProductDescription = (TextView) findViewById(R.id.productDescription);
         txtProductPrice = (TextView) findViewById(R.id.productPrice);
         productImageView = (ImageView) findViewById(R.id.prouctimageView);
