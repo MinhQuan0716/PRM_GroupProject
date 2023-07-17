@@ -7,10 +7,12 @@ import androidx.room.Room;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.prm392_project_2.Services.OrderDetailService;
 import com.example.prm392_project_2.cartutil.CartDAO;
@@ -67,17 +69,21 @@ public class SubmitCartActivity extends AppCompatActivity  {
                       call.enqueue(new Callback<SubmitCartFormat>() {
                           @Override
                           public void onResponse(Call<SubmitCartFormat> call, Response<SubmitCartFormat> response) {
-
+                              if(response.body()!= null){
+                                  Intent intent = new Intent(SubmitCartActivity.this, MainActivity.class);
+                                  startActivity(intent);
+                                  finish();
+                              }
                           }
 
                           @Override
                           public void onFailure(Call<SubmitCartFormat> call, Throwable t) {
-
+                              Toast.makeText(SubmitCartActivity.this,"Check you account again",Toast.LENGTH_LONG).show();
                           }
                       });
 
                   }catch (Exception e){
-
+                      Log.d("Error",e.getMessage());
                   }
               }
           });
