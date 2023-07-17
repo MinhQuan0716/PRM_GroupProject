@@ -6,6 +6,7 @@ namespace BusinessObject
     public class Account : BaseEntity
     {
         [MaxLength(100)]
+        //[Unique]
         public string Username { get; set; } = string.Empty;
         [MaxLength(100)]
 

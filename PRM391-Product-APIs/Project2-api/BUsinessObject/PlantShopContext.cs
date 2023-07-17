@@ -35,6 +35,7 @@ namespace BusinessObject
         {
             builder.Entity<OrderDetail>().HasOne(x => x.Product).WithMany(x => x.OrderDetailsOrdered).HasForeignKey(x => x.ProductId);
             builder.Entity<OrderDetail>().HasOne(x => x.Order).WithMany(x => x.OrderDetails).HasForeignKey(x => x.OrderId);
+            builder.Entity<Account>().HasIndex(x => x.Username).IsUnique();
             OnModelCreatingPartial(builder);
         }
         public void SeedData()
