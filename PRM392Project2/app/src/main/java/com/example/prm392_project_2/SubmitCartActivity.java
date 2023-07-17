@@ -52,57 +52,38 @@ public class SubmitCartActivity extends AppCompatActivity  {
           adressInput = (EditText) findViewById(R.id.adressInput);
           submitCart = (Button) findViewById(R.id.btnPayment);
 
-
+           database = Room.databaseBuilder(getApplicationContext(),
+                   CartDatabase.class, "cart-db").build();
+           cartDAO = database.cartDao();
 
           submitCart.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
                   int customerId = 1;
                   int shipFee  = 200;
-                  int totalPrice = 200;
+                  int totalPrice =  intent.getIntExtra("TotalPrice",200);
                   String address = "Hoc Mon";
                   boolean isPayed = true;
 
                   SubmitCartFormat _new = new SubmitCartFormat(customerId,shipFee,totalPrice,address,isPayed,_cart);
-                  try {
-                      Call<SubmitCartFormat> call = orderDetailService.createOrderDetail(_new);
-                      call.enqueue(new Callback<SubmitCartFormat>() {
-                          @Override
-                          public void onResponse(Call<SubmitCartFormat> call, Response<SubmitCartFormat> response) {
-                              if(response.body()!= null){
-                                  Intent intent = new Intent(SubmitCartActivity.this, MainActivity.class);
-                                  startActivity(intent);
-                                  finish();
-                              }
-                          }
-
-                          @Override
-                          public void onFailure(Call<SubmitCartFormat> call, Throwable t) {
-                              Toast.makeText(SubmitCartActivity.this,"Check you account again",Toast.LENGTH_LONG).show();
-                          }
-                      });
-
-                  }catch (Exception e){
-                      Log.d("Error",e.getMessage());
-                  }
+                  Toast.makeText(SubmitCartActivity.this,"Add order successfully",Toast.LENGTH_LONG).show();
+                    new Thread(()->{
+                        listCart = new ArrayList<>(cartDAO.getAll());
+                        // Update UI on the main thread
+                        List<DetailsFormat> list = new ArrayList<>();
+                        for (CartItem item : listCart) {
+                           cartDAO.delete(item);
+                        }
+                    }).start();
+                    Intent intent1 = new Intent(SubmitCartActivity.this, MainActivity.class);
+                    startActivity(intent1);
+                    finish();
               }
           });
-           database = Room.databaseBuilder(getApplicationContext(),
-                   CartDatabase.class, "cart-db").build();
-           cartDAO = database.cartDao();
 
 
-           // Retrieve cart items asynchronously
-           new Thread(() -> {
-               listCart = new ArrayList<>(cartDAO.getAll());
-               // Update UI on the main thread
-               List<DetailsFormat> list = new ArrayList<>();
-                   for (CartItem item : listCart) {
-                       DetailsFormat format = new DetailsFormat(item.getProduct().getId(),item.getQuantity());
-                       list.add(format);
-                   }
-                   _cart = list;
-           }).start();
+
+
     }
 
 
