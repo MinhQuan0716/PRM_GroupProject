@@ -1,4 +1,5 @@
 package com.example.prm392_project_2;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -99,12 +100,12 @@ public class SignInActivity extends AppCompatActivity {
                            Gson gson = new Gson();
                            String loginAccountJson = gson.toJson(loginAccount);
 
-// Save the loginAccount string to SharedPreferences
+                            // Save the loginAccount string to SharedPreferences
                            SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
                            SharedPreferences.Editor editor = preferences.edit();
                            editor.putString("loginAccount", loginAccountJson);
-                           editor.apply();
-                           Intent intent=new Intent(SignInActivity.this,MainActivity.class);
+                           editor.commit();
+                           Intent intent = new Intent(SignInActivity.this,MainActivity.class);
                            startActivity(intent);
                        }
                 }

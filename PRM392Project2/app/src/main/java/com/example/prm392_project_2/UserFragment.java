@@ -1,5 +1,6 @@
 package com.example.prm392_project_2;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.prm392_project_2.dtos.Account;
+import com.google.gson.Gson;
+import com.google.maps.android.Context;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +31,9 @@ public class UserFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private ImageView ivAvatar;
+    private TextView tvId, tvFullname, tvUsername;
 
     public UserFragment() {
         // Required empty public constructor
@@ -59,6 +70,25 @@ public class UserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user, container, false);
+        View view = inflater.inflate(R.layout.fragment_user, container, false);
+
+        ivAvatar = view.findViewById(R.id.ivAvatar);
+        tvId = view.findViewById(R.id.tvId);
+        tvFullname = view.findViewById(R.id.tvFullname);
+        tvUsername = view.findViewById(R.id.tvUsername);
+
+        SharedPreferences pref = getActivity().getSharedPreferences("MyPrefs", getActivity().MODE_PRIVATE);
+        String loginAccountJson = pref.getString("loginAccount", null);
+        Gson gson = new Gson();
+        Account loginAccount = gson.fromJson(loginAccountJson, Account.class);
+
+        tvId.setText("ID: " + String.valueOf(loginAccount.getId()));
+        tvFullname.setText("Fullname: " +loginAccount.getFullname());
+        tvUsername.setText("Username: " +loginAccount.getUsername());
+        Picasso.get().load(loginAccount.getAvatar()).placeholder(R.drawable.baseline_person_24).error(R.drawable.baseline_person_24).into(ivAvatar);
+
+
+
+        return view;
     }
 }

@@ -91,7 +91,7 @@ public class CartFragment extends Fragment {
                 CartDatabase.class, "cart-db").build();
         cartItemDao = cartDatabase.cartDao();
         btnCheckout.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), SubmitCartActivity.class);
+            Intent intent = new Intent(getActivity(), AddressActivity.class);
             intent.putExtra("TotalPrice", TotalPriceTransfer);
             startActivity(intent);
         });
