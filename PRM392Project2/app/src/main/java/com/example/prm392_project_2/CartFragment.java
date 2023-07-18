@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class CartFragment extends Fragment {
     private CartDatabase cartDatabase;
     private CartDAO cartItemDao;
     private RecyclerView cartView;
+    public  int TotalPriceTransfer;
     public CartFragment() {
         // Required empty public constructor
     }
@@ -88,13 +90,12 @@ public class CartFragment extends Fragment {
         cartDatabase = Room.databaseBuilder(getActivity(),
                 CartDatabase.class, "cart-db").build();
         cartItemDao = cartDatabase.cartDao();
-
         btnCheckout.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), SubmitCartActivity.class);
+            Intent intent = new Intent(getActivity(), AddressActivity.class);
+            intent.putExtra("TotalPrice", TotalPriceTransfer);
             startActivity(intent);
         });
         btnCheckout.setEnabled(false);
-
 
         // Retrieve cart items asynchronously
         new Thread(() -> {
@@ -109,6 +110,7 @@ public class CartFragment extends Fragment {
                 if (totalPrice > 0) {
                     btnCheckout.setEnabled(true);
                 }
+                TotalPriceTransfer = totalPrice;
                 CartAdapter adapter = new CartAdapter(listCart,cartItemDao,getActivity());
                 cartView.setAdapter(adapter);
                 cartView.setLayoutManager(new LinearLayoutManager(getActivity()));

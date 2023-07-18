@@ -7,9 +7,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 
 import com.example.prm392_project_2.databinding.ActivityMainBinding;
+import com.example.prm392_project_2.dtos.Account;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         Intent intent = getIntent();
+        Account account=(Account) intent.getSerializableExtra("Account");
         int val = intent.getIntExtra("nav", 0);
         setContentView(binding.getRoot());
         if (val == 2) {
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new HomeFragment());
             }
             if (item.getItemId() == R.id.navigation_message) {
-                replaceFragment(new MessageFragment());
+                startActivity(new Intent(getApplicationContext(),MessageActivity.class));
             }
             if (item.getItemId() == R.id.navigation_cart) {
                 replaceFragment(new CartFragment());
@@ -52,4 +55,5 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
     }
+
 }
