@@ -25,7 +25,7 @@ namespace WebAPI.Controllers
             List<OrderDetail> orderList = _context.OrderDetails.Include(x=>x.Product).Include(x=>x.Order).ToList();
             return orderList.Count > 0 ? Ok(orderList) : NotFound();
         }
-
+       
         // GET: api/OrderDetail/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)

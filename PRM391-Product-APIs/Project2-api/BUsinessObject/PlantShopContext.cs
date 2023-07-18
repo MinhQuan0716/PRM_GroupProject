@@ -42,19 +42,41 @@ namespace BusinessObject
         {
             var a = Accounts;
             var p = Products;
+            var o = Orders;
             var od = OrderDetails;
-            if (a.Any() || p.Any() || od.Any())
+            List<OrderDetail> orderDetails;
+            if (a.Any() || p.Any() || o.Any() || od.Any())
             {
-                // Data already exists, no need to seed
+                if (OrderDetails.Any(x => x.OrderId == null))
+                {
+                    // Data already exists, no need to seed
+                    orderDetails = OrderDetails.Where(x => x.OrderId == null).ToList();
+                    Random random = new Random();
+                    orderDetails.ForEach(x =>
+                    {
+                        x.OrderId = random.Next(1, 10);
+                    });
+                    UpdateRange(orderDetails);
+                    SaveChanges();
+                }
+                if(Orders.Any(x=>x.TotalPrice!= x.OrderDetails.Sum(x => x.Product.Price)))
+                {
+                    List<Order>? orders1 = Orders.Include(x=>x.OrderDetails).ThenInclude(x=>x.Product).Where(x => x.TotalPrice != x.OrderDetails.Sum(x => x.Product.Price)).ToList();
+                    orders1?.ForEach(x => x.TotalPrice = x.OrderDetails?.Sum(x => x.Product.Price) ?? 0);
+                    UpdateRange(orders1);
+                    SaveChanges();
+                }
                 return;
             }
             Console.WriteLine("Seeding Data");
             var accounts = CreateAccountSeedData(10);
             var products = CreateProductSeedData(10);
-            var orderDetails = CreateOrderDetailSeedData(accounts, products);
+            var orders = CreateOrderSeedData(10);
+            orderDetails = CreateOrderDetailSeedData(accounts, products);
 
             Accounts.AddRange(accounts);
             Products.AddRange(products);
+            Orders.AddRange(orders);
             OrderDetails.AddRange(orderDetails);
             SaveChanges();
         }
@@ -76,6 +98,15 @@ namespace BusinessObject
                 .RuleFor(p => p.Description, f => f.Lorem.Sentence())
                 .RuleFor(p => p.ImgPath, f => f.Image.PicsumUrl());
 
+            return faker.Generate(count);
+        }
+        private List<Order> CreateOrderSeedData(int count)
+        {
+            var faker = new Faker<Order>()
+                .RuleFor(o => o.Address, f => f.Address.FullAddress())
+                .RuleFor(o => o.isPayed, f => f.Random.Bool())
+                .RuleFor(o => o.ShipFee, f => f.Random.Int(20000, 50000))
+                .RuleFor(o => o.AccountId, f => f.Random.Int(1, 10));
             return faker.Generate(count);
         }
         private List<OrderDetail> CreateOrderDetailSeedData(List<Account> accounts, List<Product> products)
@@ -102,6 +133,8 @@ namespace BusinessObject
                     orderDetails.Add(new OrderDetail
                     {
                         Product = product
+                        ,
+                        OrderId = random.Next(10)
                     });
 
                     usedCombinations.Add(combination);

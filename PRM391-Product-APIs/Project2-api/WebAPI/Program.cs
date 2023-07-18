@@ -14,11 +14,11 @@ builder.Services.AddSwaggerGen();
 string connectionString;
 if (builder.Environment.IsDevelopment())
 {
-	connectionString = configuration["ConnectionStrings:Default"];
+    connectionString = configuration["ConnectionStrings:Default"];
 }
 else
 {
-	connectionString = configuration["ConnectionStrings:Production"];
+    connectionString = configuration["ConnectionStrings:Production"];
 }
 builder.Services.AddDbContext<PlantShopContext>(opt => opt.UseSqlServer(connectionString));
 builder.Services.AddCors(options =>
@@ -58,9 +58,9 @@ void SeedDatabase()
         {
             var context = services.GetRequiredService<PlantShopContext>();
             //context.Database.EnsureCreated(); // Ensure the database is created
-
-          context.SeedData(); 
-           // Seed the data
+            List<OrderDetail> orderDetails = context.OrderDetails.Where(x => x.OrderId == null).ToList();
+            context.SeedData();
+            // Seed the data
         }
         catch (Exception ex)
         {

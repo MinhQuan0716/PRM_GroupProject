@@ -20,30 +20,42 @@ namespace WebAPI.Controllers
 
         //Get: api/Order
         [HttpGet]
-        public IActionResult GetOrders() {
+        public IActionResult GetOrders()
+        {
             List<Order> orders = _context.Orders.Include(x => x.OrderDetails).ToList();
             return orders.Count > 0 ? Ok(orders) : NotFound();
         }
+       
 
         //Get by CustomerId
         [HttpGet("{id}")]
-        public IActionResult GetOrder(int id) { 
-        List<Order> orders = _context.Orders.Where(x => x.AccountId== id).ToList();
+        public IActionResult GetOrder(int id)
+        {
+            List<Order> orders = _context.Orders.Where(x => x.AccountId == id).ToList();
             return orders.Count > 0 ? Ok(orders) : NotFound();
 
         }
-
+        //Get: api/Order/2/OrderDetails
+        [HttpGet("{id}/OrderDetails")]
+        public IActionResult GetOrderDetailsFromOrderId(int id)
+        {
+            List<OrderDetail> orderDetails = _context.OrderDetails.Include(x => x.Order).Include(x => x.Product).Where(x => x.OrderId == id).ToList();
+            return orderDetails.Count > 0 ? Ok(orderDetails) : NotFound();
+        }
         [HttpPost]
-        public ActionResult<Order> AddOrder(OrderFormat order) {
+        public ActionResult<Order> AddOrder(OrderFormat order)
+        {
             Order newOrder = new Order
             {
                 AccountId = order.AccountId,
                 Address = order.Address,
                 isPayed = order.isPayed
-                ,ShipFee = order.ShipFee,
+                ,
+                ShipFee = order.ShipFee,
                 TotalPrice = order.TotalPrice
-                ,Account = _context.Accounts.FirstOrDefault(x => x.Id == order.AccountId),
-                
+                ,
+                Account = _context.Accounts.FirstOrDefault(x => x.Id == order.AccountId),
+
             };
             _context.Orders.Add(newOrder);
             _context.SaveChanges();
@@ -52,16 +64,17 @@ namespace WebAPI.Controllers
             {
                 OrderDetail orderDetail = new OrderDetail
                 {
-                 
+
                     Amount = item.Amount,
-                    OrderId =newOrder.Id
-                    ,ProductId = item.ProductId,
-                    
+                    OrderId = newOrder.Id
+                    ,
+                    ProductId = item.ProductId,
+
                 };
                 _context.OrderDetails.Add(orderDetail);
                 _context.SaveChanges();
             }
-            return CreatedAtAction(nameof(GetOrder), new { id = newOrder.Id}, order);
+            return CreatedAtAction(nameof(GetOrder), new { id = newOrder.Id }, order);
         }
 
 
@@ -69,7 +82,7 @@ namespace WebAPI.Controllers
         public IActionResult PutOrder(int id)
         {
             var newOrder = _context.Orders.FirstOrDefault(x => x.Id == id);
-            if ( newOrder is null)
+            if (newOrder is null)
             {
                 return BadRequest();
             }
